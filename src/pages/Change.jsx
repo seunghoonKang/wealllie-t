@@ -47,6 +47,7 @@ const Change = () => {
         headers: { 'Content-Type': 'application/json' },
       }
     );
+    console.log(response.data);
     return response.data; // The token
   };
 
