@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import OpenViduSession from 'openvidu-react';
 import axios from 'axios';
 
-const Change = () => {
+//Library-React 함수형으로 바꿈
+const Test = () => {
   const [mySessionId, setMySessionId] = useState('SessionA');
   const [myUserName, setMyUserName] = useState(`OpenVidu_User_`); //'OpenVidu_User_' + Math.floor(Math.random() * 100)
   const [token, setToken] = useState(undefined);
   const [session, setSession] = useState(); //기본값 undefined?
 
-  const APPLICATION_SERVER_URL = 'https://minhyeongi.xyz';
+  //요청해서 받는게 토큰?
+  const APPLICATION_SERVER_URL = 'https://wealllion.shop';
+
   const handlerJoinSessionEvent = () => {
     console.log('Join session');
   };
@@ -30,15 +33,10 @@ const Change = () => {
     setMyUserName(e.target.value);
   };
 
-  const getToken = async () => {
-    const sessionId = await createSession(mySessionId);
-    return await createToken(sessionId);
-  };
-
   const createToken = async (sessionId) => {
     const response = await axios.post(
       APPLICATION_SERVER_URL +
-        'openvidu/api/sessions/' +
+        '/openvidu/api/sessions/' +
         sessionId +
         '/connections',
       {},
@@ -51,13 +49,18 @@ const Change = () => {
 
   const createSession = async (sessionId) => {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + 'openvidu/api/sessions',
+      APPLICATION_SERVER_URL + '/openvidu/api/sessions',
       { customSessionId: sessionId },
       {
         headers: { 'Content-Type': 'application/json' },
       }
     );
     return response.data; // The sessionId
+  };
+
+  const getToken = async () => {
+    const sessionId = await createSession(mySessionId);
+    return await createToken(sessionId);
   };
 
   const joinSession = async (event) => {
@@ -119,4 +122,4 @@ const Change = () => {
   );
 };
 
-export default Change;
+export default Test;
