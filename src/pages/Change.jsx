@@ -8,7 +8,8 @@ const Change = () => {
   const [token, setToken] = useState(undefined);
   const [session, setSession] = useState(); //기본값 undefined?
 
-  const APPLICATION_SERVER_URL = 'https://wealllion.shop/';
+  const APPLICATION_SERVER_URL = 'https://minhyeongi.xyz/';
+
   const handlerJoinSessionEvent = () => {
     console.log('Join session');
   };
@@ -37,7 +38,10 @@ const Change = () => {
 
   const createToken = async (sessionId) => {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + 'api/sessions/' + sessionId + '/connections',
+      APPLICATION_SERVER_URL +
+        'openvidu/api/sessions/' +
+        sessionId +
+        '/connections',
       {},
       {
         headers: { 'Content-Type': 'application/json' },
@@ -48,12 +52,13 @@ const Change = () => {
 
   const createSession = async (sessionId) => {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + 'api/sessions',
+      APPLICATION_SERVER_URL + 'openvidu/api/sessions',
       { customSessionId: sessionId },
       {
         headers: { 'Content-Type': 'application/json' },
       }
     );
+    console.log(response);
     return response.data; // The sessionId
   };
 

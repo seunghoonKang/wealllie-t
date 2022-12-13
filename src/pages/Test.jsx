@@ -1,120 +1,161 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import OpenViduSession from 'openvidu-react';
 import axios from 'axios';
 
-const Test = () => {
-  const [mySessionId, setMySessionId] = useState('SessionA');
-  const [myUserName, setMyUserName] = useState(`OpenVidu_User_`); //'OpenVidu_User_' + Math.floor(Math.random() * 100)
-  const [token, setToken] = useState(undefined);
-  const [session, setSession] = useState(); //기본값 undefined?
+class Test extends Component {
+  constructor(props) {
+    super(props);
+    this.APPLICATION_SERVER_URL = 'https://minhyeongi.xyz/';
+    this.state = {
+      mySessionId: 'SessionA',
+      myUserName: 'OpenVidu_User_' + Math.floor(Math.random() * 100),
+      token: undefined,
+    };
 
-  const APPLICATION_SERVER_URL = 'https://wealllion.shop/openvidu/';
+    this.handlerJoinSessionEvent = this.handlerJoinSessionEvent.bind(this);
+    this.handlerLeaveSessionEvent = this.handlerLeaveSessionEvent.bind(this);
+    this.handlerErrorEvent = this.handlerErrorEvent.bind(this);
+    this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
+    this.handleChangeUserName = this.handleChangeUserName.bind(this);
+    this.joinSession = this.joinSession.bind(this);
+  }
 
-  const handlerJoinSessionEvent = () => {
+  handlerJoinSessionEvent() {
     console.log('Join session');
-  };
+  }
 
-  const handlerLeaveSessionEvent = () => {
+  handlerLeaveSessionEvent() {
     console.log('Leave session');
-    setSession(undefined);
-  };
+    this.setState({
+      session: undefined,
+    });
+  }
 
-  const handlerErrorEvent = () => {
+  handlerErrorEvent() {
     console.log('Leave session');
-  };
+  }
 
-  const handleChangeSessionId = (e) => {
-    setMySessionId(e.target.value);
-  };
+  handleChangeSessionId(e) {
+    this.setState({
+      mySessionId: e.target.value,
+    });
+  }
 
-  const handleChangeUserName = (e) => {
-    setMyUserName(e.target.value);
-  };
+  handleChangeUserName(e) {
+    this.setState({
+      myUserName: e.target.value,
+    });
+  }
 
-  const getToken = async () => {
-    const sessionId = await createSession(mySessionId);
-    return await createToken(sessionId);
-  };
+  async joinSession(event) {
+    event.preventDefault();
+    if (this.state.mySessionId && this.state.myUserName) {
+      const token = await this.getToken();
+      this.setState({
+        token: token,
+        session: true,
+      });
+    }
+  }
 
-  const createToken = async (sessionId) => {
-    const response = await axios.post(
-      APPLICATION_SERVER_URL + '/api/sessions/' + sessionId + '/connections',
-      {},
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
+  render() {
+    const mySessionId = this.state.mySessionId;
+    const myUserName = this.state.myUserName;
+    const token = this.state.token;
+    return (
+      <div>
+        {this.state.session === undefined ? (
+          <div id="join">
+            <div id="join-dialog">
+              <h1> Join a video session </h1>
+              <form onSubmit={this.joinSession}>
+                <p>
+                  <label>Participant: </label>
+                  <input
+                    type="text"
+                    id="userName"
+                    value={myUserName}
+                    onChange={this.handleChangeUserName}
+                    required
+                  />
+                </p>
+                <p>
+                  <label> Session: </label>
+                  <input
+                    type="text"
+                    id="sessionId"
+                    value={mySessionId}
+                    onChange={this.handleChangeSessionId}
+                    required
+                  />
+                </p>
+                <p>
+                  <input name="commit" type="submit" value="JOIN" />
+                </p>
+              </form>
+            </div>
+          </div>
+        ) : (
+          <div id="session">
+            <OpenViduSession
+              id="opv-session"
+              sessionName={mySessionId}
+              user={myUserName}
+              token={token}
+              joinSession={this.handlerJoinSessionEvent}
+              leaveSession={this.handlerLeaveSessionEvent}
+              error={this.handlerErrorEvent}
+            />
+          </div>
+        )}
+      </div>
     );
-    return response.data; // The token
-  };
+  }
 
-  const createSession = async (sessionId) => {
+  /**
+   * --------------------------------------------
+   * GETTING A TOKEN FROM YOUR APPLICATION SERVER
+   * --------------------------------------------
+   * The methods below request the creation of a Session and a Token to
+   * your application server. This keeps your OpenVidu deployment secure.
+   *
+   * In this sample code, there is no user control at all. Anybody could
+   * access your application server endpoints! In a real production
+   * environment, your application server must identify the user to allow
+   * access to the endpoints.
+   *
+   * Visit https://docs.openvidu.io/en/stable/application-server to learn
+   * more about the integration of OpenVidu in your application server.
+   */
+  async getToken() {
+    const sessionId = await this.createSession(this.state.mySessionId);
+    return await this.createToken(sessionId);
+  }
+
+  async createSession(sessionId) {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + 'api/sessions',
+      this.APPLICATION_SERVER_URL + 'openvidu/api/sessions',
       { customSessionId: sessionId },
       {
         headers: { 'Content-Type': 'application/json' },
       }
     );
     return response.data; // The sessionId
-  };
+  }
 
-  const joinSession = async (event) => {
-    event.preventDefault();
-    if (mySessionId && myUserName) {
-      const myToken = await getToken();
-      setToken(myToken);
-      setSession(true);
-    }
-  };
-
-  return (
-    <div>
-      {session === undefined ? (
-        <div id="join">
-          <div id="join-dialog">
-            <h1> Join a video session </h1>
-            <form onSubmit={joinSession}>
-              <p>
-                <label>Participant: </label>
-                <input
-                  type="text"
-                  id="userName"
-                  value={myUserName}
-                  onChange={handleChangeUserName}
-                  required
-                />
-              </p>
-              <p>
-                <label> Session: </label>
-                <input
-                  type="text"
-                  id="sessionId"
-                  value={mySessionId}
-                  onChange={handleChangeSessionId}
-                  required
-                />
-              </p>
-              <p>
-                <input name="commit" type="submit" value="JOIN" />
-              </p>
-            </form>
-          </div>
-        </div>
-      ) : (
-        <div id="session">
-          <OpenViduSession
-            id="opv-session"
-            sessionName={mySessionId}
-            user={myUserName}
-            token={token}
-            joinSession={handlerJoinSessionEvent}
-            leaveSession={handlerLeaveSessionEvent}
-            error={handlerErrorEvent}
-          />
-        </div>
-      )}
-    </div>
-  );
-};
+  async createToken(sessionId) {
+    const response = await axios.post(
+      this.APPLICATION_SERVER_URL +
+        'openvidu/api/sessions/' +
+        sessionId +
+        '/connections',
+      {},
+      {
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+    return response.data; // The token
+  }
+}
 
 export default Test;
