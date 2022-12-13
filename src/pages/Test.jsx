@@ -5,7 +5,7 @@ import axios from 'axios';
 class Test extends Component {
   constructor(props) {
     super(props);
-    this.APPLICATION_SERVER_URL = 'https://wealllion.shop/';
+    this.APPLICATION_SERVER_URL = 'https://minhyeongi.xyz/';
     this.state = {
       mySessionId: 'SessionA',
       myUserName: 'OpenVidu_User_' + Math.floor(Math.random() * 100),
@@ -134,7 +134,7 @@ class Test extends Component {
 
   async createSession(sessionId) {
     const response = await axios.post(
-      this.APPLICATION_SERVER_URL + 'api/sessions',
+      this.APPLICATION_SERVER_URL + 'openvidu/api/sessions',
       { customSessionId: sessionId },
       {
         headers: { 'Content-Type': 'application/json' },
@@ -146,7 +146,7 @@ class Test extends Component {
   async createToken(sessionId) {
     const response = await axios.post(
       this.APPLICATION_SERVER_URL +
-        'api/sessions/' +
+        'openvidu/api/sessions/' +
         sessionId +
         '/connections',
       {},

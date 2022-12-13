@@ -5,6 +5,8 @@ import Home from '../pages/Home';
 import Room from '../pages/Room';
 import Kakao from '../components/login/kakao';
 import Test from '../pages/Test';
+import Change from '../pages/Change';
+import Video from '../pages/VideoRoom';
 
 const Router = () => {
   return (
@@ -15,6 +17,8 @@ const Router = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/room/:id" element={<Room />} />
         <Route path="/test/" element={<Test />} />
+        <Route path="/change/" element={<Change />} />
+        <Route path="/Video/" element={<Video />} />
       </Routes>
     </BrowserRouter>
   );
