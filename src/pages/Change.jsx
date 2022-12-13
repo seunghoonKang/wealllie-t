@@ -8,7 +8,8 @@ const Change = () => {
   const [token, setToken] = useState(undefined);
   const [session, setSession] = useState(); //기본값 undefined?
 
-  const APPLICATION_SERVER_URL = 'https://minhyeongi.xyz';
+  const APPLICATION_SERVER_URL = 'https://minhyeongi.xyz/';
+
   const handlerJoinSessionEvent = () => {
     console.log('Join session');
   };
@@ -46,6 +47,7 @@ const Change = () => {
         headers: { 'Content-Type': 'application/json' },
       }
     );
+    console.log(response.data);
     return response.data; // The token
   };
 
@@ -57,6 +59,7 @@ const Change = () => {
         headers: { 'Content-Type': 'application/json' },
       }
     );
+    console.log(response);
     return response.data; // The sessionId
   };
 
