@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import OpenViduSession from 'openvidu-react';
 import axios from 'axios';
 
-const Test = () => {
+const Change = () => {
   const [mySessionId, setMySessionId] = useState('SessionA');
   const [myUserName, setMyUserName] = useState(`OpenVidu_User_`); //'OpenVidu_User_' + Math.floor(Math.random() * 100)
   const [token, setToken] = useState(undefined);
@@ -121,4 +121,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default Change;
