@@ -215,10 +215,7 @@ class OvReact extends Component {
                   className="stream-container col-md-6 col-xs-6"
                   style={{ width: '24%' }}
                 >
-                  <UserVideoComponent
-                    streamManager={this.state.publisher}
-                    myUserName={myUserName}
-                  />
+                  <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
