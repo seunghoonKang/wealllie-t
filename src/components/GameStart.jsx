@@ -14,7 +14,7 @@ import CommonModal from '../elements/CommonModal';
 import { getUserNickname } from '../redux/modules/roomSlice';
 import RTC from './RTC';
 
-const GameStart = () => {
+const GameStart = ({ userCameras }) => {
   const dispatch = useDispatch();
   // const userNickname = useSelector((state) => state.room.userNickname);
   // const category = useSelector((state) => state.game.category);
@@ -27,36 +27,36 @@ const GameStart = () => {
   const totalTime = 30000;
   const nickname = cookies.nickname;
 
-  let initialState = [
-    { nickname: '', boolkey: false, id: 1 },
-    { nickname: '', boolkey: false, id: 2 },
-    { nickname: '', boolkey: false, id: 3 },
-    { nickname: '', boolkey: false, id: 4 },
-    { nickname: '', boolkey: false, id: 5 },
-    { nickname: '', boolkey: false, id: 6 },
-    { nickname: '', boolkey: false, id: 7 },
-    { nickname: '', boolkey: false, id: 8 },
-  ];
-  const [userCameras, setUserCameras] = useState(initialState);
+  // let initialState = [
+  //   { nickname: '', boolkey: false, id: 1 },
+  //   { nickname: '', boolkey: false, id: 2 },
+  //   { nickname: '', boolkey: false, id: 3 },
+  //   { nickname: '', boolkey: false, id: 4 },
+  //   { nickname: '', boolkey: false, id: 5 },
+  //   { nickname: '', boolkey: false, id: 6 },
+  //   { nickname: '', boolkey: false, id: 7 },
+  //   { nickname: '', boolkey: false, id: 8 },
+  // ];
+  // const [userCameras, setUserCameras] = useState(initialState);
 
-  useEffect(() => {
-    // socket.emit('userNickname', param.id);
-    // socket.on('userNickname', (user) => {
-    //   setUserCameras([...user]);
-    //   return userCameras;
-    // });
-    socket.on('userNickname', (userNickname) => {
-      console.log('유저닉', userNickname);
-      //dispatch(getUserNickname(userNickname));
-      setUserCameras(initialState);
-      for (let item = 0; item < userNickname.length; item++) {
-        if (userCameras[item].nickname !== userNickname[item]) {
-          userCameras[item].nickname = userNickname[item];
-        }
-      }
-      return userCameras;
-    });
-  }, []);
+  // useEffect(() => {
+  //   // socket.emit('userNickname', param.id);
+  //   // socket.on('userNickname', (user) => {
+  //   //   setUserCameras([...user]);
+  //   //   return userCameras;
+  //   // });
+  //   socket.on('userNickname', (userNickname) => {
+  //     console.log('유저닉', userNickname);
+  //     //dispatch(getUserNickname(userNickname));
+  //     setUserCameras(initialState);
+  //     for (let item = 0; item < userNickname.length; item++) {
+  //       if (userCameras[item].nickname !== userNickname[item]) {
+  //         userCameras[item].nickname = userNickname[item];
+  //       }
+  //     }
+  //     return userCameras;
+  //   });
+  // }, []);
 
   /* 시간되면 모달 띄우기 7분으로 따라가기 */
   const votePage = () => {

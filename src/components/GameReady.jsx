@@ -4,9 +4,6 @@ import MainHeader from './gameready/MainHeader';
 import MediumHeader from './gameready/MediumHeader';
 import Camera from '../elements/Camera1';
 import Button from '../elements/Button';
-import GameEnd from './GameEnd';
-import GameStart from './GameStart';
-import GameVote from './GameVote';
 import { useState, useEffect } from 'react';
 import { socket } from '../shared/socket';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -25,7 +22,7 @@ import {
 } from '../redux/modules/gameSlice';
 import RTC from './RTC';
 
-const GameReady = () => {
+const GameReady = ({ userCameras }) => {
   const [ready, setReady] = useState(false);
   const [trueAlert, setTrueAlert] = useState(false);
   const [pendingReady, setPendingReady] = useState([]);
@@ -38,33 +35,32 @@ const GameReady = () => {
   const nickname = cookies.nickname;
 
   //유저 기본 틀
-  const initialState = [
-    { nickname: '', boolkey: false, id: 1 },
-    { nickname: '', boolkey: false, id: 2 },
-    { nickname: '', boolkey: false, id: 3 },
-    { nickname: '', boolkey: false, id: 4 },
-    { nickname: '', boolkey: false, id: 5 },
-    { nickname: '', boolkey: false, id: 6 },
-    { nickname: '', boolkey: false, id: 7 },
-    { nickname: '', boolkey: false, id: 8 },
-  ];
+  // const initialState = [
+  //   { nickname: '', boolkey: false, id: 1 },
+  //   { nickname: '', boolkey: false, id: 2 },
+  //   { nickname: '', boolkey: false, id: 3 },
+  //   { nickname: '', boolkey: false, id: 4 },
+  //   { nickname: '', boolkey: false, id: 5 },
+  //   { nickname: '', boolkey: false, id: 6 },
+  //   { nickname: '', boolkey: false, id: 7 },
+  //   { nickname: '', boolkey: false, id: 8 },
+  // ];
 
-  const [userCameras, setUserCameras] = useState(initialState);
+  // const [userCameras, setUserCameras] = useState(initialState);
 
-  const vacancy = useMemo(() => {
-    socket.on('userNickname', (userNickname) => {
-      console.log('유저닉', userNickname);
-      //dispatch(getUserNickname(userNickname));
-      setUserCameras(initialState);
-      for (let item = 0; item < userNickname.length; item++) {
-        if (userCameras[item].nickname !== userNickname[item]) {
-          userCameras[item].nickname = userNickname[item];
-        }
-      }
-      return userCameras;
-    });
-  }, [userCameras]);
-  console.log('유저 카메라', userCameras);
+  // const vacancy = useMemo(() => {
+  //   socket.on('userNickname', (userNickname) => {
+  //     console.log('유저닉', userNickname);
+  //     //dispatch(getUserNickname(userNickname));
+  //     setUserCameras(initialState);
+  //     for (let item = 0; item < userNickname.length; item++) {
+  //       if (userCameras[item].nickname !== userNickname[item]) {
+  //         userCameras[item].nickname = userNickname[item];
+  //       }
+  //     }
+  //     return userCameras;
+  //   });
+  // }, [userCameras]);
 
   //게임 준비 보냄
   const ReadyHandler = () => {
