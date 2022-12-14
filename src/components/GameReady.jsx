@@ -192,10 +192,11 @@ const GameReady = () => {
           nickname={nickname}
           rtcExit={rtcExit}
           ready={ready}
+          userCameras={userCameras}
         />
 
-        <Users>
-          {/* {userCameras.map((person) =>
+        {/* <Users>
+          {userCameras.map((person) =>
             person.boolkey === true ? (
               <ReadyWrap key={person.id}>
                 <ReadyMediumWrap>
@@ -212,8 +213,8 @@ const GameReady = () => {
                 param={param.id}
               />
             )
-          )} */}
-        </Users>
+          )}
+        </Users> */}
       </ReadyLayoutSection>
     </ReadyLayout>
   );
