@@ -1,3 +1,5 @@
+//이건 게임 스타트
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { socket } from '../shared/socket';
 import { useDispatch, useSelector } from 'react-redux';

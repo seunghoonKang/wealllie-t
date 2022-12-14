@@ -55,7 +55,7 @@ const GameReady = () => {
   const vacancy = useMemo(() => {
     socket.on('userNickname', (userNickname) => {
       console.log('유저닉', userNickname);
-      //dispatch(getUserNickname(userNickname));
+      dispatch(getUserNickname(userNickname));
       setUserCameras(initialState);
       for (let item = 0; item < userNickname.length; item++) {
         if (userCameras[item].nickname !== userNickname[item]) {
