@@ -7,7 +7,7 @@ const GameStartTimerSection = () => {
     <TimerContainer>
       <TimerDiv>
         <MinWidthTimerDiv>
-          <Timer min="7" />
+          <Timer min="5" />
         </MinWidthTimerDiv>
       </TimerDiv>
     </TimerContainer>
