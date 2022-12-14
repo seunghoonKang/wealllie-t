@@ -5,7 +5,11 @@ import { socket } from '../shared/socket';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import { useParams } from 'react-router-dom';
-import { gameOperation } from '../redux/modules/gameSlice';
+import {
+  gameOperation,
+  giveCategory,
+  giveSpy,
+} from '../redux/modules/gameSlice';
 import Camera from '../elements/Camera2';
 import GameStartHeader from './gamestart/GameStartHeader';
 import styled from 'styled-components';
@@ -26,7 +30,7 @@ const GameStart = ({ userCameras }) => {
   const [earlyVote, setEarlyVote] = useState(false);
   const [cookies] = useCookies(['nickname']);
   const param = useParams();
-  let totalTime = 300000;
+  let totalTime = 10000;
   // let totalTime = 5000;
   const nickname = cookies.nickname;
 
@@ -61,12 +65,22 @@ const GameStart = ({ userCameras }) => {
   //   });
   // }, []);
 
+  useEffect(() => {
+    socket.on('spyUser', (spyUser) => {
+      console.log('이건 스파이', spyUser);
+      dispatch(giveSpy(spyUser));
+    });
+    //카테고리 받는 소켓
+    socket.on('gameStart', (gameStart) => {
+      console.log('이건 카테고리', gameStart);
+      dispatch(giveCategory(gameStart));
+    });
+  }, []);
+
   /* 시간되면 모달 띄우기 7분으로 따라가기 */
   const votePage = () => {
     setTimeout(() => {
       setModalStatus(true);
-      changeGameOperation();
-      clearTimeout(changeGameOperation);
     }, totalTime);
   };
 
@@ -81,13 +95,15 @@ const GameStart = ({ userCameras }) => {
       } else {
         return;
       }
-    }, totalTime + 2000);
+    }, totalTime + 7000);
   };
 
   useEffect(() => {
     votePage();
+    changeGameOperation();
     return () => {
       clearTimeout(votePage);
+      clearTimeout(changeGameOperation);
     };
   }, []);
 

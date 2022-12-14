@@ -30,6 +30,7 @@ const GameReady = () => {
   const [trueAlert, setTrueAlert] = useState(false);
   const [pendingReady, setPendingReady] = useState([]);
   const [rtcExit, setRtcExit] = useState(false);
+
   const [cookies] = useCookies(['nickname']);
   const param = useParams();
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const GameReady = () => {
   const userNick = useSelector((state) => state.room.userNickname);
   const gamePage = useSelector((state) => state.game.gamePage);
   const nickname = cookies.nickname;
+  const [stamp, setStamp] = useState(`${nickname}`); //기본값이 본인으로 선택
 
   //유저 기본 틀
   const initialState = [
