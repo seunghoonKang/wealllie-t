@@ -19,6 +19,7 @@ const OvReact = (props) => {
   const [currentVideoDevice, setCurrentVideoDevice] = useState();
 
   // --- 1) Get an OpenVidu object ---
+  // const OV = new OpenVidu();
   const OV = new OpenVidu();
 
   const leaveSession = useCallback(() => {

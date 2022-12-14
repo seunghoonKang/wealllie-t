@@ -14,17 +14,18 @@ class OvReact extends Component {
       mySessionId: 'SessionA',
       myUserName: 'Participant' + Math.floor(Math.random() * 100),
       session: undefined,
-      mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
-      publisher: undefined, //로컬 웹캠 스트림
-      subscribers: [], //화상 통화에서 다른 사용자의 활성 스트림을 저장
+      // mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
+      publisher: undefined,
+      subscribers: [],
     };
+    //***** 제일 왼쪽 상단에 뜨는 mainStreamManager 화면 필요없음.
 
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.switchCamera = this.switchCamera.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
-    this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
+    // this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
   }
 
@@ -52,13 +53,13 @@ class OvReact extends Component {
     });
   }
 
-  handleMainVideoStream(stream) {
-    if (this.state.mainStreamManager !== stream) {
-      this.setState({
-        mainStreamManager: stream,
-      });
-    }
-  }
+  // handleMainVideoStream(stream) {
+  //   if (this.state.mainStreamManager !== stream) {
+  //     this.setState({
+  //       mainStreamManager: stream,
+  //     });
+  //   }
+  // }
 
   deleteSubscriber(streamManager) {
     let subscribers = this.state.subscribers;
@@ -119,7 +120,7 @@ class OvReact extends Component {
         this.getToken().then((token) => {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
-          //mySession 첫번째 매개변수는 최근 검색된 사용자의 토큰 
+          //mySession 첫번째 매개변수는 최근 검색된 사용자의 토큰
           mySession
             .connect(token, { clientData: this.state.myUserName })
             .then(async () => {
@@ -158,7 +159,7 @@ class OvReact extends Component {
               // Set the main video in the page to display our webcam and store our Publisher
               this.setState({
                 currentVideoDevice: currentVideoDevice,
-                mainStreamManager: publisher,
+                // mainStreamManager: publisher,
                 publisher: publisher,
               });
             })
@@ -190,7 +191,7 @@ class OvReact extends Component {
       subscribers: [],
       mySessionId: 'SessionA',
       myUserName: 'Participant' + Math.floor(Math.random() * 100),
-      mainStreamManager: undefined,
+      // mainStreamManager: undefined,
       publisher: undefined,
     });
   }
@@ -218,12 +219,12 @@ class OvReact extends Component {
           });
 
           //newPublisher.once("accessAllowed", () => {
-          await this.state.session.unpublish(this.state.mainStreamManager);
+          // await this.state.session.unpublish(this.state.mainStreamManager);
 
           await this.state.session.publish(newPublisher);
           this.setState({
             currentVideoDevice: newVideoDevice[0],
-            mainStreamManager: newPublisher,
+            // mainStreamManager: newPublisher,
             publisher: newPublisher,
           });
         }
@@ -251,7 +252,7 @@ class OvReact extends Component {
               <h1> Join a video session </h1>
               <form className="form-group" onSubmit={this.joinSession}>
                 <p>
-                  <label>Participant: </label>
+                  <label>참가자 이름: </label>
                   <input
                     className="form-control"
                     type="text"
@@ -262,7 +263,7 @@ class OvReact extends Component {
                   />
                 </p>
                 <p>
-                  <label> Session: </label>
+                  <label> 방 채널: </label>
                   <input
                     className="form-control"
                     type="text"
@@ -298,7 +299,7 @@ class OvReact extends Component {
               />
             </div>
 
-            {this.state.mainStreamManager !== undefined ? (
+            {/* {this.state.mainStreamManager !== undefined ? (
               <div id="main-video" className="col-md-6">
                 <UserVideoComponent
                   streamManager={this.state.mainStreamManager}
@@ -311,7 +312,7 @@ class OvReact extends Component {
                   value="Switch Camera"
                 />
               </div>
-            ) : null}
+            ) : null} */}
             <div id="video-container" className="col-md-6">
               {this.state.publisher !== undefined ? (
                 <div
