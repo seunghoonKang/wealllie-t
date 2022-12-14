@@ -32,7 +32,7 @@ const TimerDiv = styled.div`
   color: #fff;
   background-color: #222;
   animation-name: progressTimeBar;
-  animation-duration: 420s;
+  animation-duration: 300s;
   animation-iteration-count: 1;
   animation-direction: reverse;
   animation-timing-function: linear;

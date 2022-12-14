@@ -297,7 +297,7 @@ const Layout = styled.div`
   background-color: white;
   border-radius: 10px;
   padding: 16px;
-  min-height: 650px;
+  /* min-height: 650px; */
   /* height: 90vh; */
 `;
 
