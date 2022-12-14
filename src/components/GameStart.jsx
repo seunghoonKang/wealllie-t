@@ -146,9 +146,11 @@ const GameCardSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30vh;
+  /* height: 30vh; */
+
   width: 100%;
   padding-top: 16px;
+  padding-bottom: 16px;
   margin-bottom: 16px;
   gap: 16px;
 `;

@@ -5,7 +5,9 @@ import UserVideoComponent from './UserVideoComponent';
 import Camera from '../elements/Camera1';
 import styled from 'styled-components';
 import './OvReactCss.css';
+
 const APPLICATION_SERVER_URL = 'https://minhyeongi.xyz/';
+
 class OvReact extends Component {
   constructor(props) {
     super(props);
@@ -211,16 +213,21 @@ class OvReact extends Component {
                       <Camera
                         streamManager={this.state.publisher}
                         person={person.nickname}
+                        key={person.id}
                       />
                     )}
                   {this.state.subscribers.map(
                     (sub, i) =>
                       JSON.parse(sub.stream.connection.data).clientData ===
                         person.nickname && (
-                        <Camera streamManager={sub} person={person.nickname} />
+                        <Camera
+                          streamManager={sub}
+                          person={person.nickname}
+                          key={person.id}
+                        />
                       )
                   )}
-                  {person.nickname === '' && <Camera />}
+                  {person.nickname === '' && <Camera key={person.id} />}
                 </>
               ))}
 

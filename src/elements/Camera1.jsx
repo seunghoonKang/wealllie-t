@@ -29,12 +29,13 @@ const Camera = ({ streamManager }) => {
   return (
     <Wrap>
       <PreParingIconWrap>
-        {/* <Preparing /> */}
-        {streamManager !== undefined && (
-          <div className="streamcomponent">
+        {streamManager !== undefined ? (
+          <div>
             {/* <OpenViduVideoComponent streamManager={props.streamManager} /> */}
             <video autoPlay={true} ref={videoRef} />
           </div>
+        ) : (
+          <Preparing />
         )}
       </PreParingIconWrap>
       <NickName>{getNicknameTag()}</NickName>

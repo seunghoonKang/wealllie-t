@@ -35,7 +35,7 @@ const GameReady = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userNick = useSelector((state) => state.room.userNickname);
-  const gameOperation = useSelector((state) => state.game.gameOperation);
+  const gamePage = useSelector((state) => state.game.gamePage);
   const nickname = cookies.nickname;
 
   //유저 기본 틀
@@ -153,7 +153,7 @@ const GameReady = () => {
 
   return (
     <>
-      {gameOperation === 0 && (
+      {gamePage === 0 && (
         <ReadyLayout>
           {trueAlert === true && (
             <CommonModal
@@ -195,8 +195,8 @@ const GameReady = () => {
           </ReadyLayoutSection>
         </ReadyLayout>
       )}
-      {gameOperation === 1 && <GameStart />}
-      {gameOperation === 2 && <GameVote />}
+      {gamePage === 1 && <GameStart />}
+      {gamePage === 2 && <GameVote />}
       <RTC
         param={param.id}
         nickname={nickname}
