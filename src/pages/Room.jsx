@@ -20,7 +20,7 @@ const Room = () => {
   const navigate = useNavigate();
   const gameOperation = useSelector((state) => state.game.gameOperation);
 
-  console.log('게임 값 다 받고 실행할 값', gameOperation);
+  // console.log('게임 값 다 받고 실행할 값', gameOperation);
 
   useEffect(() => {
     //로그인 안하면 로비입장 못하게 하기 (useEffect 안에 넣어야 navigate 먹어요)

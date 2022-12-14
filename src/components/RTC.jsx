@@ -4,15 +4,15 @@ import React, { Component } from 'react';
 import UserVideoComponent from './UserVideoComponent';
 import './OvReactCss.css';
 const APPLICATION_SERVER_URL = 'https://minhyeongi.xyz/';
-
 class OvReact extends Component {
   constructor(props) {
     super(props);
 
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
+      // rtcExit: props.rtcExit,
       mySessionId: props.param,
-      myUserName: 'Participant' + Math.floor(Math.random() * 100),
+      myUserName: props.nickname,
       session: undefined,
       publisher: undefined,
       subscribers: [],
@@ -50,6 +50,14 @@ class OvReact extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps === true) {
+      console.log('this.state.rtcExit 값', this.state.rtcExit);
+      console.log('prevProps 값', prevProps);
+      this.leaveSession();
+    }
+  }
+
   // joinSession() {
   componentDidMount() {
     // --- 1) Get an OpenVidu object ---
@@ -58,7 +66,6 @@ class OvReact extends Component {
 
     // --- 2) Init a session ---
     console.log('*****OV 뭐야', this.OV);
-    //OpenVidu에 대한 데이터들이 들어있었음
     console.log('*****OV.initSession 뭐야', this.OV.initSession());
     this.setState(
       {
@@ -110,7 +117,7 @@ class OvReact extends Component {
               let publisher = await this.OV.initPublisherAsync(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
-                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+                publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
                 resolution: '640x480', // The resolution of your video
                 frameRate: 30, // The frame rate of your video
@@ -167,8 +174,8 @@ class OvReact extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: 'SessionA',
-      myUserName: 'Participant' + Math.floor(Math.random() * 100),
+      mySessionId: '',
+      myUserName: '',
       publisher: undefined,
     });
   }
@@ -176,13 +183,11 @@ class OvReact extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
-    // this.joinSession();
-
     return (
       <div className="container">
         {this.state.session !== undefined ? (
           <div id="session">
-            <div id="session-header">
+            {/* <div id="session-header">
               <input
                 className="btn btn-large btn-danger"
                 type="button"
@@ -190,7 +195,8 @@ class OvReact extends Component {
                 onClick={this.leaveSession}
                 value="Leave session"
               />
-            </div>
+            </div> */}
+            {this.props.rtcExit && this.leaveSession()}
             <div
               id="video-container"
               className="col-md-4"
@@ -210,7 +216,7 @@ class OvReact extends Component {
                 >
                   <UserVideoComponent
                     streamManager={this.state.publisher}
-                    nickname={this.props.nickname}
+                    // nickname={this.props.nickname}
                   />
                 </div>
               ) : null}
