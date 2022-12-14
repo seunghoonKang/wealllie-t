@@ -96,7 +96,11 @@ const GameStart = () => {
           time
         />
       )}
-      <GameStartHeader earlyVote={earlyVote} setEarlyVote={setEarlyVote} />
+      <GameStartHeader
+        earlyVote={earlyVote}
+        setEarlyVote={setEarlyVote}
+        userCameras={userCameras}
+      />
       <GameEntireContainer>
         <GameCardSection>
           <Question>

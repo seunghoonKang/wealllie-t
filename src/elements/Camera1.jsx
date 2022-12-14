@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import React, { useEffect, useRef } from 'react';
 import { ReactComponent as Preparing } from '../assets/preparing_cat.svg';
 
-const Camera = ({ streamManager }) => {
+const Camera = ({ streamManager, ready }) => {
   // console.log('여긴 카메라', person);
   const videoRef = useRef();
   function getNicknameTag() {
@@ -20,10 +20,14 @@ const Camera = ({ streamManager }) => {
 
   useEffect(() => {
     if (streamManager && !!videoRef) {
+      //streamManger.videos에 중복해서 배열이 차지 않도록
+      // if (streamManager.videos[0].video !== videoRef.current.video) {
       streamManager.addVideoElement(videoRef.current);
+      // }
     }
   }, []);
-  // console.log('streamManager::', streamManager);
+  console.log('streamManager::', streamManager);
+  console.log('videoRef::', videoRef);
   // console.log('person::', person);
   // console.log('getNicknameTag::', getNicknameTag());
   return (
@@ -38,7 +42,16 @@ const Camera = ({ streamManager }) => {
           <Preparing />
         )}
       </PreParingIconWrap>
-      <NickName>{getNicknameTag()}</NickName>
+      {ready !== undefined ? (
+        ready ? (
+          <NickName style={{ background: 'orange' }}>
+            {getNicknameTag()}
+          </NickName>
+        ) : (
+          <NickName>{getNicknameTag()}</NickName>
+        )
+      ) : null}
+      {/* <NickName>{getNicknameTag()}</NickName> */}
     </Wrap>
   );
 };

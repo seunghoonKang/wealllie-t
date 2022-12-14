@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import CommonModal from '../../elements/CommonModal';
 import { gameOperation } from '../../redux/modules/gameSlice';
 
-const GameStartHeader = ({ setEarlyVote }) => {
+const GameStartHeader = ({ setEarlyVote, userCameras }) => {
   const [modalStatus, setModalStatus] = useState(false);
   const [disabledBtn, setDisabledBtn] = useState('투표준비');
   const [cookies] = useCookies(['nickname']);
@@ -45,8 +45,8 @@ const GameStartHeader = ({ setEarlyVote }) => {
     //방에 들어온 인원이 for문을 돌며,
     //cookies에 있는 닉네임과 같은 사람이라면 투표
     //투표완료 되면 버튼 다시 비활성화
-    for (let i = 0; i < userNickname.length; i++) {
-      if (userNickname[i] === cookies.nickname) {
+    for (let i = 0; i < userCameras.length; i++) {
+      if (userCameras[i].nickname === cookies.nickname) {
         setEarlyVote(true);
         socket.emit('nowVote', param.id, true, cookies.nickname);
         setDisabledBtn('투표완료');
