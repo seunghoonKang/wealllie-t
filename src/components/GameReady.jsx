@@ -30,7 +30,6 @@ const GameReady = () => {
   const [trueAlert, setTrueAlert] = useState(false);
   const [pendingReady, setPendingReady] = useState([]);
   const [rtcExit, setRtcExit] = useState(false);
-
   const [cookies] = useCookies(['nickname']);
   const param = useParams();
   const dispatch = useDispatch();
@@ -39,6 +38,7 @@ const GameReady = () => {
   const gamePage = useSelector((state) => state.game.gamePage);
   const nickname = cookies.nickname;
   const [stamp, setStamp] = useState(`${nickname}`); //기본값이 본인으로 선택
+  const [voteStatus, setVoteStatus] = useState(false);
 
   //유저 기본 틀
   const initialState = [
@@ -192,7 +192,15 @@ const GameReady = () => {
         </ReadyLayout>
       )}
       {gamePage === 1 && <GameStart userCameras={userCameras} />}
-      {gamePage === 2 && <GameVote userCameras={userCameras} />}
+      {gamePage === 2 && (
+        <GameVote
+          userCameras={userCameras}
+          voteStatus={voteStatus}
+          setVoteStatus={setVoteStatus}
+          stamp={stamp}
+          setStamp={setStamp}
+        />
+      )}
       {/* <GameVote userCameras={userCameras} /> */}
       <RTC
         param={param.id}
@@ -200,6 +208,10 @@ const GameReady = () => {
         rtcExit={rtcExit}
         ready={ready}
         userCameras={userCameras}
+        stamp={stamp}
+        setStamp={setStamp}
+        voteStatus={voteStatus}
+        setVoteStatus={setVoteStatus}
       />
     </>
   );

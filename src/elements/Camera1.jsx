@@ -1,10 +1,20 @@
 import styled from 'styled-components';
 import React, { useEffect, useRef } from 'react';
 import { ReactComponent as Preparing } from '../assets/preparing_cat.svg';
+import { useSelector } from 'react-redux';
+import arrestedstamp from '../img/arrested.png';
 
-const Camera = ({ streamManager, ready }) => {
+const Camera = ({
+  person,
+  stamp,
+  setStamp,
+  voteStatus,
+  streamManager,
+  ready,
+}) => {
   // console.log('여긴 카메라', person);
   const videoRef = useRef();
+  const gamePage = useSelector((state) => state.game.gamePage);
   function getNicknameTag() {
     // Gets the nickName of the user
     if (streamManager) {
@@ -20,23 +30,31 @@ const Camera = ({ streamManager, ready }) => {
 
   useEffect(() => {
     if (streamManager && !!videoRef) {
-      //streamManger.videos에 중복해서 배열이 차지 않도록
-      // if (streamManager.videos[0].video !== videoRef.current.video) {
       streamManager.addVideoElement(videoRef.current);
-      // }
     }
   }, []);
-  // console.log('streamManager::', streamManager);
-  // console.log('videoRef::', videoRef);
-  // console.log('person::', person);
-  // console.log('getNicknameTag::', getNicknameTag());
+
+  //투표할때 필요한 로직
+  const arrestedToggle = () => {
+    if (gamePage === 2) {
+      person !== '' && voteStatus == false && setStamp(person);
+      // if (voteStatus == false) {
+      //   setStamp(person);
+      // }
+    }
+  };
+
   return (
-    <Wrap>
+    <Wrap onClick={arrestedToggle}>
       <PreParingIconWrap>
         {streamManager !== undefined ? (
           <div>
-            {/* <OpenViduVideoComponent streamManager={props.streamManager} /> */}
             <video autoPlay={true} ref={videoRef} />
+            {gamePage === 3 && person !== '' && stamp === person && (
+              <Arrested>
+                <img src={arrestedstamp} alt="투표 지목된 사람" />
+              </Arrested>
+            )}
           </div>
         ) : (
           <Preparing />
@@ -70,6 +88,7 @@ const Wrap = styled.div`
   justify-content: flex-end;
   align-items: center;
   overflow: hidden;
+  position: relative;
 `;
 
 const PreParingIconWrap = styled.div`
@@ -92,6 +111,14 @@ const NickName = styled.div`
   text-align: center;
   border-radius: 0px 0px 5px 5px;
 `;
-const Name = styled.p`
+
+const Arrested = styled.div`
   width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-25%);
+  margin-left: -80px;
+  z-index: 99;
 `;
