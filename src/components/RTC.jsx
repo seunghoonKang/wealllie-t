@@ -10,14 +10,13 @@ class OvReact extends Component {
 
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
-      // rtcExit: props.rtcExit,
+      //----- mySessionId에 param.id 를 props로 받아와서 넣어주었음 (해당방의 param.id = sessionId)
       mySessionId: props.param,
       myUserName: props.nickname,
       session: undefined,
       publisher: undefined,
       subscribers: [],
     };
-    //----- 제일 왼쪽 상단에 뜨는 mainStreamManager 화면 필요없음.
 
     //----- mySessionId에 param.id 를 props로 받아와서 넣어주면될듯
     //----- myUserName에는 cookies.nickname 넣기
@@ -82,9 +81,10 @@ class OvReact extends Component {
           // Subscribe to the Stream to receive it. Second parameter is undefined
           // so OpenVidu doesn't create an HTML video by its own
           var subscriber = mySession.subscribe(event.stream, undefined);
+          console.log('-----subscriber!-----', subscriber);
           var subscribers = this.state.subscribers;
           subscribers.push(subscriber);
-          console.log('subscribers', subscribers);
+          console.log('-----subscribers-----', subscribers);
           // Update the state with the new subscribers
           this.setState({
             subscribers: subscribers,
@@ -188,15 +188,6 @@ class OvReact extends Component {
       <div className="container">
         {this.state.session !== undefined ? (
           <div id="session">
-            {/* <div id="session-header">
-              <input
-                className="btn btn-large btn-danger"
-                type="button"
-                id="buttonLeaveSession"
-                onClick={this.leaveSession}
-                value="Leave session"
-              />
-            </div> */}
             {this.props.rtcExit && this.leaveSession()}
             <div
               id="video-container"
