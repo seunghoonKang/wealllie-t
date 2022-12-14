@@ -26,7 +26,7 @@ import {
 import RTC from './RTC';
 
 const GameReady = () => {
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(true);
   const [trueAlert, setTrueAlert] = useState(false);
   const [pendingReady, setPendingReady] = useState([]);
   const [rtcExit, setRtcExit] = useState(false);
@@ -184,7 +184,7 @@ const GameReady = () => {
               <span>모든 플레이어가 준비되면 자동으로 게임이 시작됩니다.</span>
               <ReadyButton>
                 <div onClick={ReadyHandler}>
-                  {ready ? '준비하기' : '준비완료'}
+                  {!ready ? '준비완료' : '준비하기'}
                 </div>
               </ReadyButton>
             </ReadyButtonSection>
