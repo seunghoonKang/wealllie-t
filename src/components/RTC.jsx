@@ -217,7 +217,7 @@ class OvReact extends Component {
                 >
                   <UserVideoComponent
                     streamManager={this.state.publisher}
-                    // nickname={this.props.nickname}
+                    myUserName={myUserName}
                   />
                 </div>
               ) : null}

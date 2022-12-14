@@ -4,10 +4,10 @@ import Login from '../pages/Login';
 import Home from '../pages/Home';
 import Room from '../pages/Room';
 import Kakao from '../components/login/kakao';
-import Test from '../pages/Test';
+// import Test from '../pages/Test';
 import Change from '../pages/Change';
-import OvReact from '../components/OvReact';
-import RTC from '../components/RTC';
+// import OvReact from '../components/OvReact';
+// import RTC from '../components/RTC';
 
 const Router = () => {
   return (
@@ -17,7 +17,7 @@ const Router = () => {
         <Route path="/api/auth/kakao/callback" element={<Kakao />}></Route>
         <Route path="/home" element={<Home />} />
         <Route path="/room/:id" element={<Room />} />
-        <Route path="/test/" element={<RTC />} />
+        {/* <Route path="/test/" element={<RTC />} /> */}
         <Route path="/change/" element={<Change />} />
       </Routes>
     </BrowserRouter>
