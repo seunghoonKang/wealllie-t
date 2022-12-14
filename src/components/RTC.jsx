@@ -61,63 +61,6 @@ class OvReact extends Component {
       this.setState({
         readyStatus: prevProps.ready,
       });
-      // var mySession = this.state.session;
-      // this.getToken().then((token) => {
-      //   // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
-      //   // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
-      //   mySession
-      //     .connect(token, {
-      //       clientData: this.state.myUserName,
-      //       boolkey: this.state.readyStatus,
-      //       // boolkey: prevProps.ready,
-      //     })
-      //     .then(async () => {
-      //       // --- 5) Get your own camera stream ---
-
-      //       // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
-      //       // element: we will manage it on our own) and with the desired properties
-      //       let publisher = await this.OV.initPublisherAsync(undefined, {
-      //         audioSource: undefined, // The source of audio. If undefined default microphone
-      //         videoSource: undefined, // The source of video. If undefined default webcam
-      //         publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
-      //         publishVideo: true, // Whether you want to start publishing with your video enabled or not
-      //         resolution: '640x480', // The resolution of your video
-      //         frameRate: 30, // The frame rate of your video
-      //         insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
-      //         mirror: false, // Whether to mirror your local video or not
-      //       });
-
-      //       // --- 6) Publish your stream ---
-
-      //       mySession.publish(publisher);
-
-      //       // Obtain the current video device in use
-      //       var devices = await this.OV.getDevices();
-      //       var videoDevices = devices.filter(
-      //         (device) => device.kind === 'videoinput'
-      //       );
-      //       var currentVideoDeviceId = publisher.stream
-      //         .getMediaStream()
-      //         .getVideoTracks()[0]
-      //         .getSettings().deviceId;
-      //       var currentVideoDevice = videoDevices.find(
-      //         (device) => device.deviceId === currentVideoDeviceId
-      //       );
-
-      //       // Set the main video in the page to display our webcam and store our Publisher
-      //       this.setState({
-      //         currentVideoDevice: currentVideoDevice,
-      //         publisher: publisher,
-      //       });
-      //     })
-      //     .catch((error) => {
-      //       console.log(
-      //         'There was an error connecting to the session:',
-      //         error.code,
-      //         error.message
-      //       );
-      //     });
-      // });
     }
     //readyStatus 를 보내기 위해
   }
@@ -253,7 +196,7 @@ class OvReact extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
-    const { ready } = this.state.readyStatus;
+
     return (
       <div className="container">
         {this.state.session !== undefined && (
@@ -285,16 +228,16 @@ class OvReact extends Component {
                         person.nickname && (
                         <Camera streamManager={sub} person={person.nickname} />
                       )
-                      //   <div
-                      //     key={i}
-                      //     className="stream-container col-md-6 col-xs-6"
-                      //     style={{ width: '24%' }}
-                      //   >
-                      //     <UserVideoComponent
-                      //   streamManager={sub}
-                      //   ready={this.state.readyStatus}
-                      // />
-                      //   </div>
+                    //   <div
+                    //     key={i}
+                    //     className="stream-container col-md-6 col-xs-6"
+                    //     style={{ width: '24%' }}
+                    //   >
+                    //     <UserVideoComponent
+                    //   streamManager={sub}
+                    //   ready={this.state.readyStatus}
+                    // />
+                    //   </div>
                   )}
                 </>
               ))}

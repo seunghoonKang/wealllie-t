@@ -12,57 +12,48 @@ import CorrectCardSection from './gamestart/CorrectCardSection';
 import GameStartTimerSection from './gamestart/GameStartTimerSection';
 import CommonModal from '../elements/CommonModal';
 import { getUserNickname } from '../redux/modules/roomSlice';
+import RTC from './RTC';
 
 const GameStart = () => {
   const dispatch = useDispatch();
   // const userNickname = useSelector((state) => state.room.userNickname);
   // const category = useSelector((state) => state.game.category);
   const category = useSelector((state) => state.game.sendCategory.category);
+  const gameOperation = useSelector((state) => state.game.gameOperation);
   const [modalStatus, setModalStatus] = useState(false);
   const [earlyVote, setEarlyVote] = useState(false);
+  const [cookies] = useCookies(['nickname']);
   const param = useParams();
   const totalTime = 30000;
+  const nickname = cookies.nickname;
 
-  let initialState = [];
+  let initialState = [
+    { nickname: '', boolkey: false, id: 1 },
+    { nickname: '', boolkey: false, id: 2 },
+    { nickname: '', boolkey: false, id: 3 },
+    { nickname: '', boolkey: false, id: 4 },
+    { nickname: '', boolkey: false, id: 5 },
+    { nickname: '', boolkey: false, id: 6 },
+    { nickname: '', boolkey: false, id: 7 },
+    { nickname: '', boolkey: false, id: 8 },
+  ];
   const [userCameras, setUserCameras] = useState(initialState);
 
-  // const fillInTheEmptySeats = useMemo(() => {
-  //   socket.emit('userNickname', param.id);
-  //   socket.on('userNickname', (user) => {
-  //     console.log(user);
-  //     setUserCameras(initialState);
-  //     for (let i = 0; i < user.length; i++) {
-  //       if (userCameras[i].nickname !== user[i]) {
-  //         userCameras[i].nickname = user[i];
-  //       }
-  //     }
-  //     dispatch(getUserNickname(userCameras));
-  //     return userCameras;
-  //   });
-  // }, [userCameras]);
-
-  // useEffect(() => {
-  //   socket.emit('userNickname', param.id);
-  //   socket.on('userNickname', (user) => {
-  //     console.log(user);
-  //     setUserCameras(initialState);
-  //     for (let i = 0; i < user.length; i++) {
-  //       if (userCameras[i].nickname !== user[i]) {
-  //         let newuserCameras = [...userCameras];
-  //         newuserCameras[i].nickname = user[i];
-  //         setUserCameras(newuserCameras);
-  //         // userCameras[i].nickname = user[i];
-  //       }
-  //     }
-  //     dispatch(getUserNickname(userCameras));
-  //     return userCameras;
-  //   });
-  // }, []);
-
   useEffect(() => {
-    socket.emit('userNickname', param.id);
-    socket.on('userNickname', (user) => {
-      setUserCameras([...user]);
+    // socket.emit('userNickname', param.id);
+    // socket.on('userNickname', (user) => {
+    //   setUserCameras([...user]);
+    //   return userCameras;
+    // });
+    socket.on('userNickname', (userNickname) => {
+      console.log('유저닉', userNickname);
+      //dispatch(getUserNickname(userNickname));
+      setUserCameras(initialState);
+      for (let item = 0; item < userNickname.length; item++) {
+        if (userCameras[item].nickname !== userNickname[item]) {
+          userCameras[item].nickname = userNickname[item];
+        }
+      }
       return userCameras;
     });
   }, []);
@@ -118,9 +109,16 @@ const GameStart = () => {
           <CorrectCardSection />
         </GameCardSection>
         <VideoContainer>
-          {userCameras.map((person, i) => (
+          <RTC
+            param={param.id}
+            nickname={nickname}
+            // rtcExit={rtcExit}
+            // ready={ready}
+            userCameras={userCameras}
+          />
+          {/* {userCameras.map((person, i) => (
             <Camera person={person} key={i} />
-          ))}
+          ))} */}
         </VideoContainer>
       </GameEntireContainer>
     </>
