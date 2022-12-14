@@ -65,18 +65,6 @@ const GameStart = ({ userCameras }) => {
   //   });
   // }, []);
 
-  useEffect(() => {
-    socket.on('spyUser', (spyUser) => {
-      console.log('이건 스파이', spyUser);
-      dispatch(giveSpy(spyUser));
-    });
-    //카테고리 받는 소켓
-    socket.on('gameStart', (gameStart) => {
-      console.log('이건 카테고리', gameStart);
-      dispatch(giveCategory(gameStart));
-    });
-  }, []);
-
   /* 시간되면 모달 띄우기 7분으로 따라가기 */
   const votePage = () => {
     setTimeout(() => {
