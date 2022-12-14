@@ -3,11 +3,13 @@ import ReadyButton from './gameready/ReadyButton';
 import MainHeader from './gameready/MainHeader';
 import MediumHeader from './gameready/MediumHeader';
 import Camera from '../elements/Camera1';
+import Button from '../elements/Button';
 import { useState, useEffect } from 'react';
 import { socket } from '../shared/socket';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as Ready } from '../assets/r_eady.svg';
 import { ReactComponent as Prepared } from '../assets/prepared_cat.svg';
+import { ReactComponent as WeAllLieLogo } from '../assets/we_all_lie_white_logo.svg';
 import { useSelector, useDispatch } from 'react-redux';
 import CommonModal from '../elements/CommonModal';
 import { getUserNickname } from '../redux/modules/roomSlice';
@@ -18,15 +20,21 @@ import {
   giveCategory,
   giveSpy,
 } from '../redux/modules/gameSlice';
+import RTC from './RTC';
+import RTC2 from './RTCfunc';
+import RTC3 from './RTCfuncTest';
 
 const GameReady = () => {
   const [ready, setReady] = useState(true);
   const [trueAlert, setTrueAlert] = useState(false);
   const [pendingReady, setPendingReady] = useState([]);
+  const [rtcExit, setRtcExit] = useState(false);
   const [cookies] = useCookies(['nickname']);
   const param = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userNick = useSelector((state) => state.room.userNickname);
+  const nickname = cookies.nickname;
 
   // console.log('너는 계속 찍히니?', userNick);
   // console.log('이거 준비임', ready);
@@ -127,6 +135,24 @@ const GameReady = () => {
     }
   }, [pendingReady]);
 
+  //나가기 핸들러 들고옴
+  const BtnHandler = async () => {
+    //RTC 퇴장이벤트
+    await setRtcExit(true);
+    await console.log('rtcExit 값 어때', rtcExit);
+
+    //나가기 버튼 눌렀을 때 퇴장메세지 이벤트 emit
+    await socket.emit('leaveRoomMsg', param.id, nickname);
+    console.log('나가기버튼 누름');
+    //퇴장이벤트
+    await socket.emit('leaveRoom', param.id, nickname);
+    await socket.on('leaveRoom', () => {
+      navigate('/home');
+    });
+    await navigate('/home');
+  };
+  console.log('rtcExit 값 어때', rtcExit);
+
   return (
     <ReadyLayout>
       {trueAlert === true && (
@@ -136,7 +162,26 @@ const GameReady = () => {
           time
         ></CommonModal>
       )}
-      <MainHeader />
+      {/* 나가기 버튼 있는 곳 */}
+      {/* <MainHeader /> */}
+      <JinyoungHeader>
+        <LogoImg>
+          <WeAllLieLogo />
+        </LogoImg>
+        <Button
+          type={'button'}
+          addStyle={{
+            backgroundColor: '#A5A5A5',
+            borderRadius: '6px',
+            width: '113px',
+            height: '40px',
+            color: '#222222',
+          }}
+          onClick={BtnHandler}
+        >
+          나가기
+        </Button>
+      </JinyoungHeader>
       <MediumHeader></MediumHeader>
       <ReadyLayoutSection>
         <ReadyButtonSection>
@@ -146,9 +191,12 @@ const GameReady = () => {
             <div onClick={ReadyHandler}>{ready ? '준비하기' : '준비완료'}</div>{' '}
           </ReadyButton>
         </ReadyButtonSection>
-
+        {/* 그냥여기 넣어봄 */}
+        <RTC param={param.id} nickname={nickname} rtcExit={rtcExit} />
+        {/* <RTC2 meetingRoomId={param.id} userId={cookies.nickname} /> */}
+        {/* <RTC3 param={param.id} nickname={cookies.nickname} /> */}
         <Users>
-          {userCameras.map((person) =>
+          {/* {userCameras.map((person) =>
             person.boolkey === true ? (
               <ReadyWrap key={person.id}>
                 <ReadyMediumWrap>
@@ -158,9 +206,14 @@ const GameReady = () => {
                 <ReadyNickName>{person.nickname}</ReadyNickName>
               </ReadyWrap>
             ) : (
-              <Camera person={person.nickname} key={person.id} />
+              // <RTC param={param.id} nickname={cookies.nickname} />
+              <Camera
+                person={person.nickname}
+                key={person.id}
+                param={param.id}
+              />
             )
-          )}
+          )} */}
         </Users>
       </ReadyLayoutSection>
     </ReadyLayout>
@@ -245,4 +298,15 @@ const ReadyNickName = styled.div`
   text-align: center;
   border-radius: 0px 0px 5px 5px;
   margin: 5% 0 0 0;
+`;
+const JinyoungHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 71px;
+  flex-wrap: wrap;
+`;
+
+const LogoImg = styled.div`
+  margin-left: 15px;
 `;

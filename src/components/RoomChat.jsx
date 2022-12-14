@@ -105,7 +105,7 @@ const RoomChat = () => {
   // console.log(chat);
   return (
     <ChatLayout theme={themeContext}>
-      <MyProfile onClick={() => navigate(`/user/`)}>
+      <MyProfile>
         {/* 나중에 user 는 모달로 할수도 */}
         My ∨
       </MyProfile>

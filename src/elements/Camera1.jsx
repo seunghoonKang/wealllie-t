@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ReactComponent as Preparing } from '../assets/preparing_cat.svg';
 
-const Camera = ({ person }) => {
+const Camera = ({ person, param }) => {
   // console.log('여긴 카메라', person);
   return (
     <Wrap>

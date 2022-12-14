@@ -157,10 +157,6 @@ a:hover .demo-logo {
   margin-bottom: 20px;
 }
 
-#session-title {
-  display: inline-block;
-}
-
 #buttonLeaveSession {
   float: right;
   margin-top: 20px;

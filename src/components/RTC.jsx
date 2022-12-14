@@ -4,28 +4,26 @@ import React, { Component } from 'react';
 import UserVideoComponent from './UserVideoComponent';
 import './OvReactCss.css';
 const APPLICATION_SERVER_URL = 'https://minhyeongi.xyz/';
-
 class OvReact extends Component {
   constructor(props) {
     super(props);
 
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
-      mySessionId: 'SessionA',
-      myUserName: 'Participant' + Math.floor(Math.random() * 100),
+      // rtcExit: props.rtcExit,
+      mySessionId: props.param,
+      myUserName: props.nickname,
       session: undefined,
-      // mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
       publisher: undefined,
       subscribers: [],
     };
-    //***** 제일 왼쪽 상단에 뜨는 mainStreamManager 화면 필요없음.
+    //----- 제일 왼쪽 상단에 뜨는 mainStreamManager 화면 필요없음.
 
-    this.joinSession = this.joinSession.bind(this);
+    //----- mySessionId에 param.id 를 props로 받아와서 넣어주면될듯
+    //----- myUserName에는 cookies.nickname 넣기
+
+    // this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
-    this.switchCamera = this.switchCamera.bind(this);
-    this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
-    this.handleChangeUserName = this.handleChangeUserName.bind(this);
-    // this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
   }
 
@@ -41,26 +39,6 @@ class OvReact extends Component {
     this.leaveSession();
   }
 
-  handleChangeSessionId(e) {
-    this.setState({
-      mySessionId: e.target.value,
-    });
-  }
-
-  handleChangeUserName(e) {
-    this.setState({
-      myUserName: e.target.value,
-    });
-  }
-
-  // handleMainVideoStream(stream) {
-  //   if (this.state.mainStreamManager !== stream) {
-  //     this.setState({
-  //       mainStreamManager: stream,
-  //     });
-  //   }
-  // }
-
   deleteSubscriber(streamManager) {
     let subscribers = this.state.subscribers;
     let index = subscribers.indexOf(streamManager, 0);
@@ -72,13 +50,23 @@ class OvReact extends Component {
     }
   }
 
-  joinSession() {
+  componentDidUpdate(prevProps) {
+    if (prevProps === true) {
+      console.log('this.state.rtcExit 값', this.state.rtcExit);
+      console.log('prevProps 값', prevProps);
+      this.leaveSession();
+    }
+  }
+
+  // joinSession() {
+  componentDidMount() {
     // --- 1) Get an OpenVidu object ---
 
     this.OV = new OpenVidu();
 
     // --- 2) Init a session ---
-
+    console.log('*****OV 뭐야', this.OV);
+    console.log('*****OV.initSession 뭐야', this.OV.initSession());
     this.setState(
       {
         session: this.OV.initSession(),
@@ -95,7 +83,7 @@ class OvReact extends Component {
           var subscriber = mySession.subscribe(event.stream, undefined);
           var subscribers = this.state.subscribers;
           subscribers.push(subscriber);
-
+          console.log('subscribers', subscribers);
           // Update the state with the new subscribers
           this.setState({
             subscribers: subscribers,
@@ -129,7 +117,7 @@ class OvReact extends Component {
               let publisher = await this.OV.initPublisherAsync(undefined, {
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
-                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+                publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
                 resolution: '640x480', // The resolution of your video
                 frameRate: 30, // The frame rate of your video
@@ -157,7 +145,6 @@ class OvReact extends Component {
               // Set the main video in the page to display our webcam and store our Publisher
               this.setState({
                 currentVideoDevice: currentVideoDevice,
-                // mainStreamManager: publisher,
                 publisher: publisher,
               });
             })
@@ -187,107 +174,20 @@ class OvReact extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: 'SessionA',
-      myUserName: 'Participant' + Math.floor(Math.random() * 100),
-      // mainStreamManager: undefined,
+      mySessionId: '',
+      myUserName: '',
       publisher: undefined,
     });
-  }
-
-  async switchCamera() {
-    try {
-      const devices = await this.OV.getDevices();
-      var videoDevices = devices.filter(
-        (device) => device.kind === 'videoinput'
-      );
-
-      if (videoDevices && videoDevices.length > 1) {
-        var newVideoDevice = videoDevices.filter(
-          (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
-        );
-
-        if (newVideoDevice.length > 0) {
-          // Creating a new publisher with specific videoSource
-          // In mobile devices the default and first camera is the front one
-          var newPublisher = this.OV.initPublisher(undefined, {
-            videoSource: newVideoDevice[0].deviceId,
-            publishAudio: true,
-            publishVideo: true,
-            mirror: true,
-          });
-
-          //newPublisher.once("accessAllowed", () => {
-          // await this.state.session.unpublish(this.state.mainStreamManager);
-
-          await this.state.session.publish(newPublisher);
-          this.setState({
-            currentVideoDevice: newVideoDevice[0],
-            // mainStreamManager: newPublisher,
-            publisher: newPublisher,
-          });
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
   }
 
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
-
     return (
       <div className="container">
-        {this.state.session === undefined ? (
-          <div id="join">
-            <div id="img-div">
-              <img
-                src="resources/images/openvidu_grey_bg_transp_cropped.png"
-                alt="OpenVidu logo"
-              />
-            </div>
-            <div id="join-dialog" className="jumbotron vertical-center">
-              <h1> Join a video session </h1>
-              <form className="form-group" onSubmit={this.joinSession}>
-                <p>
-                  <label>참가자 이름: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="userName"
-                    value={myUserName}
-                    onChange={this.handleChangeUserName}
-                    required
-                  />
-                </p>
-                <p>
-                  <label> 방 채널: </label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="sessionId"
-                    value={mySessionId}
-                    onChange={this.handleChangeSessionId}
-                    required
-                  />
-                </p>
-                <p className="text-center">
-                  <input
-                    className="btn btn-lg btn-success"
-                    name="commit"
-                    type="submit"
-                    value="JOIN"
-                  />
-                </p>
-              </form>
-            </div>
-          </div>
-        ) : null}
-
         {this.state.session !== undefined ? (
           <div id="session">
-            <div id="session-header">
-              <h1 id="session-title">{mySessionId}</h1>
+            {/* <div id="session-header">
               <input
                 className="btn btn-large btn-danger"
                 type="button"
@@ -295,38 +195,36 @@ class OvReact extends Component {
                 onClick={this.leaveSession}
                 value="Leave session"
               />
-            </div>
-
-            {/* {this.state.mainStreamManager !== undefined ? (
-              <div id="main-video" className="col-md-6">
-                <UserVideoComponent
-                  streamManager={this.state.mainStreamManager}
-                />
-                <input
-                  className="btn btn-large btn-success"
-                  type="button"
-                  id="buttonSwitchCamera"
-                  onClick={this.switchCamera}
-                  value="Switch Camera"
-                />
-              </div>
-            ) : null} */}
-            <div id="video-container" className="col-md-6">
+            </div> */}
+            {this.props.rtcExit && this.leaveSession()}
+            <div
+              id="video-container"
+              className="col-md-4"
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-evenly', //가로 띄우기
+                width: '100%',
+                height: '50vh',
+                backgroundColor: 'pink',
+              }}
+            >
               {this.state.publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
-                  onClick={() =>
-                    this.handleMainVideoStream(this.state.publisher)
-                  }
+                  style={{ width: '24%' }}
                 >
-                  <UserVideoComponent streamManager={this.state.publisher} />
+                  <UserVideoComponent
+                    streamManager={this.state.publisher}
+                    // nickname={this.props.nickname}
+                  />
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={i}
                   className="stream-container col-md-6 col-xs-6"
-                  onClick={() => this.handleMainVideoStream(sub)}
+                  style={{ width: '24%' }}
                 >
                   <UserVideoComponent streamManager={sub} />
                 </div>
