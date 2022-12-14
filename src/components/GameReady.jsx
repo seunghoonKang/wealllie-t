@@ -81,11 +81,6 @@ const GameReady = () => {
     console.log('게임레디 확인', pendingReady);
   }, [pendingReady]);
 
-  //닉네임 변경
-  // socket.on('userNickname', (userNickname) => {
-  //   dispatch(getUserNickname(userNickname));
-  // });
-
   //불값 변경
   const GameReadyBool = () => {
     for (let int = 0; int < 8; int++) {
