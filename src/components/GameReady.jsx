@@ -35,6 +35,7 @@ const GameReady = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userNick = useSelector((state) => state.room.userNickname);
+  const gameOperation = useSelector((state) => state.game.gameOperation);
   const nickname = cookies.nickname;
 
   //유저 기본 틀
@@ -137,11 +138,11 @@ const GameReady = () => {
   const BtnHandler = async () => {
     //RTC 퇴장이벤트
     await setRtcExit(true);
-    await console.log('rtcExit 값 어때', rtcExit);
 
     //나가기 버튼 눌렀을 때 퇴장메세지 이벤트 emit
     await socket.emit('leaveRoomMsg', param.id, nickname);
-    console.log('나가기버튼 누름');
+    // console.log('나가기버튼 누름');
+
     //퇴장이벤트
     await socket.emit('leaveRoom', param.id, nickname);
     await socket.on('leaveRoom', () => {
@@ -149,68 +150,61 @@ const GameReady = () => {
     });
     await navigate('/home');
   };
-  console.log('rtcExit 값 어때', rtcExit);
 
   return (
-    <ReadyLayout>
-      {trueAlert === true && (
-        <CommonModal
-          main="잠시 후 게임이 시작됩니다! "
-          sub="카메라 앞에 앉아 게임을 준비해주세요."
-          time
-        ></CommonModal>
+    <>
+      {gameOperation === 0 && (
+        <ReadyLayout>
+          {trueAlert === true && (
+            <CommonModal
+              main="잠시 후 게임이 시작됩니다! "
+              sub="카메라 앞에 앉아 게임을 준비해주세요."
+              time
+            ></CommonModal>
+          )}
+          {/* <MainHeader /> */}
+          <JinyoungHeader>
+            <LogoImg>
+              <WeAllLieLogo />
+            </LogoImg>
+            <Button
+              type={'button'}
+              addStyle={{
+                backgroundColor: '#A5A5A5',
+                borderRadius: '6px',
+                width: '113px',
+                height: '40px',
+                color: '#222222',
+              }}
+              onClick={BtnHandler}
+            >
+              나가기
+            </Button>
+          </JinyoungHeader>
+          <MediumHeader></MediumHeader>
+          <ReadyLayoutSection>
+            <ReadyButtonSection>
+              <h1>준비 버튼을 클릭하세요 ! </h1>
+              <span>모든 플레이어가 준비되면 자동으로 게임이 시작됩니다.</span>
+              <ReadyButton>
+                <div onClick={ReadyHandler}>
+                  {ready ? '준비하기' : '준비완료'}
+                </div>
+              </ReadyButton>
+            </ReadyButtonSection>
+          </ReadyLayoutSection>
+        </ReadyLayout>
       )}
-      {/* 나가기 버튼 있는 곳 */}
-      {/* <MainHeader /> */}
-      <JinyoungHeader>
-        <LogoImg>
-          <WeAllLieLogo />
-        </LogoImg>
-        <Button
-          type={'button'}
-          addStyle={{
-            backgroundColor: '#A5A5A5',
-            borderRadius: '6px',
-            width: '113px',
-            height: '40px',
-            color: '#222222',
-          }}
-          onClick={BtnHandler}
-        >
-          나가기
-        </Button>
-      </JinyoungHeader>
-      <MediumHeader></MediumHeader>
-      <ReadyLayoutSection>
-        {/* {gameOperation === 0 && (
-          <ReadyButtonSection>
-            <h1>준비 버튼을 클릭하세요 ! </h1>
-            <span>모든 플레이어가 준비되면 자동으로 게임이 시작됩니다.</span>
-            <ReadyButton>
-              <div onClick={ReadyHandler}>
-                {ready ? '준비하기' : '준비완료'}
-              </div>{' '}
-            </ReadyButton>
-          </ReadyButtonSection>
-        )}
-        {gameOperation === 1 && <GameStart />}
-        {gameOperation === 2 && <GameVote />} */}
-        <ReadyButtonSection>
-          <h1>준비 버튼을 클릭하세요 ! </h1>
-          <span>모든 플레이어가 준비되면 자동으로 게임이 시작됩니다.</span>
-          <ReadyButton>
-            <div onClick={ReadyHandler}>{ready ? '준비하기' : '준비완료'}</div>{' '}
-          </ReadyButton>
-        </ReadyButtonSection>
-        <RTC
-          param={param.id}
-          nickname={nickname}
-          rtcExit={rtcExit}
-          ready={ready}
-          userCameras={userCameras}
-        />
-      </ReadyLayoutSection>
-    </ReadyLayout>
+      {gameOperation === 1 && <GameStart />}
+      {gameOperation === 2 && <GameVote />}
+      <RTC
+        param={param.id}
+        nickname={nickname}
+        rtcExit={rtcExit}
+        ready={ready}
+        userCameras={userCameras}
+      />
+    </>
   );
 };
 
@@ -218,8 +212,9 @@ export default GameReady;
 
 const ReadyLayout = styled.div`
   width: 100%;
-  height: 90vh;
-  min-height: 650px;
+  /* height: 90vh; */
+  /* height: 30vh; */
+  /* min-height: 650px; */
   border-radius: 5px;
 `;
 
@@ -251,6 +246,18 @@ const ReadyButtonSection = styled.div`
     color: #2b2b2b;
     margin: 0px 0px 1vh;
   }
+`;
+
+const JinyoungHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 71px;
+  flex-wrap: wrap;
+`;
+
+const LogoImg = styled.div`
+  margin-left: 15px;
 `;
 
 const Users = styled.div`
@@ -291,15 +298,4 @@ const ReadyNickName = styled.div`
   text-align: center;
   border-radius: 0px 0px 5px 5px;
   margin: 5% 0 0 0;
-`;
-const JinyoungHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 71px;
-  flex-wrap: wrap;
-`;
-
-const LogoImg = styled.div`
-  margin-left: 15px;
 `;

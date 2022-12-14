@@ -198,9 +198,9 @@ class OvReact extends Component {
     const myUserName = this.state.myUserName;
 
     return (
-      <div className="container">
+      <div>
         {this.state.session !== undefined && (
-          <div id="session">
+          <div>
             {this.props.rtcExit && this.leaveSession()}
             <Users>
               {this.props.userCameras.map((person) => (
@@ -212,15 +212,6 @@ class OvReact extends Component {
                         streamManager={this.state.publisher}
                         person={person.nickname}
                       />
-                      //   <div
-                      //     className="stream-container col-md-6 col-xs-6"
-                      //     style={{ width: '24%' }}
-                      //   >
-                      //     <UserVideoComponent
-                      //   streamManager={this.state.publisher}
-                      //   ready={this.state.readyStatus}
-                      // />
-                      //   </div>
                     )}
                   {this.state.subscribers.map(
                     (sub, i) =>
@@ -228,17 +219,8 @@ class OvReact extends Component {
                         person.nickname && (
                         <Camera streamManager={sub} person={person.nickname} />
                       )
-                    //   <div
-                    //     key={i}
-                    //     className="stream-container col-md-6 col-xs-6"
-                    //     style={{ width: '24%' }}
-                    //   >
-                    //     <UserVideoComponent
-                    //   streamManager={sub}
-                    //   ready={this.state.readyStatus}
-                    // />
-                    //   </div>
                   )}
+                  {person.nickname === '' && <Camera />}
                 </>
               ))}
 
@@ -362,6 +344,6 @@ const Users = styled.div`
   width: 100%;
   min-width: 880px;
   height: 50vh;
-  min-height: 312px;
+  min-height: 340px;
   margin: 1vh 0;
 `;

@@ -19,7 +19,6 @@ const GameStart = () => {
   // const userNickname = useSelector((state) => state.room.userNickname);
   // const category = useSelector((state) => state.game.category);
   const category = useSelector((state) => state.game.sendCategory.category);
-  const gameOperation = useSelector((state) => state.game.gameOperation);
   const [modalStatus, setModalStatus] = useState(false);
   const [earlyVote, setEarlyVote] = useState(false);
   const [cookies] = useCookies(['nickname']);
@@ -108,7 +107,7 @@ const GameStart = () => {
           </Question>
           <CorrectCardSection />
         </GameCardSection>
-        <VideoContainer>
+        {/* <VideoContainer>
           <RTC
             param={param.id}
             nickname={nickname}
@@ -116,10 +115,10 @@ const GameStart = () => {
             // ready={ready}
             userCameras={userCameras}
           />
-          {/* {userCameras.map((person, i) => (
+          {userCameras.map((person, i) => (
             <Camera person={person} key={i} />
-          ))} */}
-        </VideoContainer>
+          ))}
+        </VideoContainer> */}
       </GameEntireContainer>
     </>
   );

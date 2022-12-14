@@ -2,12 +2,16 @@ import styled from 'styled-components';
 import React, { useEffect, useRef } from 'react';
 import { ReactComponent as Preparing } from '../assets/preparing_cat.svg';
 
-const Camera = ({ person, param, streamManager }) => {
+const Camera = ({ streamManager }) => {
   // console.log('여긴 카메라', person);
   const videoRef = useRef();
   function getNicknameTag() {
     // Gets the nickName of the user
-    return JSON.parse(streamManager.stream.connection.data).clientData;
+    if (streamManager) {
+      return JSON.parse(streamManager.stream.connection.data).clientData;
+    } else {
+      return '';
+    }
   }
 
   // function getReadyTag() {
@@ -19,9 +23,9 @@ const Camera = ({ person, param, streamManager }) => {
       streamManager.addVideoElement(videoRef.current);
     }
   }, []);
-  console.log('streamManager::', streamManager);
-  console.log('person::', person);
-  console.log('getNicknameTag::', getNicknameTag());
+  // console.log('streamManager::', streamManager);
+  // console.log('person::', person);
+  // console.log('getNicknameTag::', getNicknameTag());
   return (
     <Wrap>
       <PreParingIconWrap>
@@ -29,14 +33,11 @@ const Camera = ({ person, param, streamManager }) => {
         {streamManager !== undefined && (
           <div className="streamcomponent">
             {/* <OpenViduVideoComponent streamManager={props.streamManager} /> */}
-            <video id="<whatever>" autoPlay={true} ref={videoRef} />
-            {/* <div>
-              <Name>{getNicknameTag()}</Name>
-            </div> */}
+            <video autoPlay={true} ref={videoRef} />
           </div>
         )}
       </PreParingIconWrap>
-      <NickName>{person}</NickName>
+      <NickName>{getNicknameTag()}</NickName>
     </Wrap>
   );
 };
@@ -46,6 +47,8 @@ export default Camera;
 const Wrap = styled.div`
   width: 24%;
   height: 45%;
+  min-height: 170px;
+  /* max-height: 160px; */
   background-color: #e8e8e8;
   border-radius: 5px;
   display: flex;
