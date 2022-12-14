@@ -26,7 +26,8 @@ const GameStart = ({ userCameras }) => {
   const [earlyVote, setEarlyVote] = useState(false);
   const [cookies] = useCookies(['nickname']);
   const param = useParams();
-  const totalTime = 360000;
+  let totalTime = 300000;
+  // let totalTime = 5000;
   const nickname = cookies.nickname;
 
   // let initialState = [
@@ -64,6 +65,8 @@ const GameStart = ({ userCameras }) => {
   const votePage = () => {
     setTimeout(() => {
       setModalStatus(true);
+      changeGameOperation();
+      clearTimeout(changeGameOperation);
     }, totalTime);
   };
 
@@ -73,20 +76,18 @@ const GameStart = ({ userCameras }) => {
   const changeGameOperation = () => {
     setTimeout(() => {
       setModalStatus(false);
-      if (gamePage === 0 || 2 || 3) {
-        return;
-      } else {
+      if (gamePage === 1) {
         dispatch(gameOperation(2));
+      } else {
+        return;
       }
-    }, totalTime + 7000);
+    }, totalTime + 2000);
   };
 
   useEffect(() => {
     votePage();
-    changeGameOperation();
     return () => {
       clearTimeout(votePage);
-      clearTimeout(changeGameOperation);
     };
   }, []);
 
