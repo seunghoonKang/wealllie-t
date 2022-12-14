@@ -162,7 +162,6 @@ const GameReady = () => {
               time
             ></CommonModal>
           )}
-          {/* <MainHeader /> */}
           <JinyoungHeader>
             <LogoImg>
               <WeAllLieLogo />
@@ -197,6 +196,7 @@ const GameReady = () => {
       )}
       {gamePage === 1 && <GameStart userCameras={userCameras} />}
       {gamePage === 2 && <GameVote userCameras={userCameras} />}
+      {/* <GameVote userCameras={userCameras} /> */}
       <RTC
         param={param.id}
         nickname={nickname}
