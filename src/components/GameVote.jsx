@@ -269,21 +269,21 @@ const GameVote = () => {
         <CardContainer>
           <WordExamples spyAnswer={spyAnswer} setSpyAnswer={setSpyAnswer} />
         </CardContainer>
-      ) : (
-        <Users>
-          {userCameras.map((person, index) => (
-            <Camera
-              person={person}
-              //person={person.nickname}
-              key={index}
-              stamp={stamp}
-              setStamp={setStamp}
-              voteStatus={voteStatus}
-              setVoteStatus={setVoteStatus}
-            />
-          ))}
-        </Users>
-      )}
+      ) : null
+      // <Users>
+      //   {userCameras.map((person, index) => (
+      //     <Camera
+      //       person={person}
+      //       //person={person.nickname}
+      //       key={index}
+      //       stamp={stamp}
+      //       setStamp={setStamp}
+      //       voteStatus={voteStatus}
+      //       setVoteStatus={setVoteStatus}
+      //     />
+      //   ))}
+      // </Users>
+      }
     </Layout>
   );
 };
