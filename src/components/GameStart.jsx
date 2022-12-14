@@ -21,11 +21,12 @@ const GameStart = ({ userCameras }) => {
   // const userNickname = useSelector((state) => state.room.userNickname);
   // const category = useSelector((state) => state.game.category);
   const category = useSelector((state) => state.game.sendCategory.category);
+  const gamePage = useSelector((state) => state.game.gamePage);
   const [modalStatus, setModalStatus] = useState(false);
   const [earlyVote, setEarlyVote] = useState(false);
   const [cookies] = useCookies(['nickname']);
   const param = useParams();
-  const totalTime = 30000;
+  const totalTime = 360000;
   const nickname = cookies.nickname;
 
   // let initialState = [
@@ -72,7 +73,7 @@ const GameStart = ({ userCameras }) => {
   const changeGameOperation = () => {
     setTimeout(() => {
       setModalStatus(false);
-      if (gameOperation === 2 || 3) {
+      if (gamePage === 0 || 2 || 3) {
         return;
       } else {
         dispatch(gameOperation(2));
