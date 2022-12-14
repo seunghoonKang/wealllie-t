@@ -55,7 +55,7 @@ const GameReady = () => {
   const vacancy = useMemo(() => {
     socket.on('userNickname', (userNickname) => {
       console.log('유저닉', userNickname);
-      //dispatch(getUserNickname(userNickname));
+      dispatch(getUserNickname(userNickname));
       setUserCameras(initialState);
       for (let item = 0; item < userNickname.length; item++) {
         if (userCameras[item].nickname !== userNickname[item]) {
@@ -195,8 +195,8 @@ const GameReady = () => {
           </ReadyLayoutSection>
         </ReadyLayout>
       )}
-      {gamePage === 1 && <GameStart />}
-      {gamePage === 2 && <GameVote />}
+      {gamePage === 1 && <GameStart userCameras={userCameras} />}
+      {gamePage === 2 && <GameVote userCameras={userCameras} />}
       <RTC
         param={param.id}
         nickname={nickname}
