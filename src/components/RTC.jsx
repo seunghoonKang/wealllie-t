@@ -344,6 +344,6 @@ const Users = styled.div`
   width: 100%;
   min-width: 880px;
   height: 50vh;
-  min-height: 340px;
+  min-height: 360px;
   margin: 1vh 0;
 `;
