@@ -265,24 +265,25 @@ const GameVote = () => {
           )}
         </Vote>
       )}
-      {spyAlive === false ? (
-        <CardContainer>
-          <WordExamples spyAnswer={spyAnswer} setSpyAnswer={setSpyAnswer} />
-        </CardContainer>
-      ) : null
-      // <Users>
-      //   {userCameras.map((person, index) => (
-      //     <Camera
-      //       person={person}
-      //       //person={person.nickname}
-      //       key={index}
-      //       stamp={stamp}
-      //       setStamp={setStamp}
-      //       voteStatus={voteStatus}
-      //       setVoteStatus={setVoteStatus}
-      //     />
-      //   ))}
-      // </Users>
+      {
+        spyAlive === false ? (
+          <CardContainer>
+            <WordExamples spyAnswer={spyAnswer} setSpyAnswer={setSpyAnswer} />
+          </CardContainer>
+        ) : null
+        // <Users>
+        //   {userCameras.map((person, index) => (
+        //     <Camera
+        //       person={person}
+        //       //person={person.nickname}
+        //       key={index}
+        //       stamp={stamp}
+        //       setStamp={setStamp}
+        //       voteStatus={voteStatus}
+        //       setVoteStatus={setVoteStatus}
+        //     />
+        //   ))}
+        // </Users>
       }
     </Layout>
   );
@@ -297,7 +298,7 @@ const Layout = styled.div`
   border-radius: 10px;
   padding: 16px;
   min-height: 650px;
-  height: 90vh;
+  /* height: 90vh; */
 `;
 
 const HeaderSection = styled.section`
@@ -366,12 +367,10 @@ const Vote = styled.div`
   background-color: ${(props) => props.theme.color.gray1};
   width: 100%;
   min-height: 180px;
-  height: 22vh;
-  /* text-align: center; */
+  /* height: 22vh; */
   margin-top: 2vh;
   margin-bottom: 2vh;
   padding: 30px 30px;
-  /* padding-bottom: 60px; */
   border-radius: 6px;
   ${VoteTitle} {
     font-size: 22px;
@@ -397,7 +396,7 @@ const CardContainer = styled.div`
   align-content: space-evenly; //세로 띄우기
   width: 100%;
   height: 50vh;
-  min-height: 312px;
+  min-height: 360px;
   /* background-color: gray; */
 `;
 
