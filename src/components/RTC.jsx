@@ -10,14 +10,14 @@ class OvReact extends Component {
 
     // These properties are in the state's component in order to re-render the HTML whenever their values change
     this.state = {
-      // rtcExit: props.rtcExit,
+      //----- mySessionId에 param.id 를 props로 받아와서 넣어주었음 (해당방의 param.id = sessionId)
       mySessionId: props.param,
       myUserName: props.nickname,
       session: undefined,
       publisher: undefined,
       subscribers: [],
+      readyStatus: props.ready,
     };
-    //----- 제일 왼쪽 상단에 뜨는 mainStreamManager 화면 필요없음.
 
     //----- mySessionId에 param.id 를 props로 받아와서 넣어주면될듯
     //----- myUserName에는 cookies.nickname 넣기
@@ -51,10 +51,13 @@ class OvReact extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps === true) {
-      console.log('this.state.rtcExit 값', this.state.rtcExit);
-      console.log('prevProps 값', prevProps);
-      this.leaveSession();
+    console.log('-----prevProps 값', prevProps);
+    console.log('-----prevProps.ready 값', prevProps.ready);
+    console.log('-----this.state.ready 값', this.state.readyStatus);
+    if (this.state.readyStatus !== prevProps.ready) {
+      this.setState({
+        readyStatus: prevProps.ready,
+      });
     }
   }
 
@@ -81,9 +84,10 @@ class OvReact extends Component {
           // Subscribe to the Stream to receive it. Second parameter is undefined
           // so OpenVidu doesn't create an HTML video by its own
           var subscriber = mySession.subscribe(event.stream, undefined);
+          console.log('-----subscriber!-----', subscriber);
           var subscribers = this.state.subscribers;
           subscribers.push(subscriber);
-          console.log('subscribers', subscribers);
+          console.log('-----subscribers-----', subscribers);
           // Update the state with the new subscribers
           this.setState({
             subscribers: subscribers,
@@ -108,7 +112,10 @@ class OvReact extends Component {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           mySession
-            .connect(token, { clientData: this.state.myUserName })
+            .connect(token, {
+              clientData: this.state.myUserName,
+              // boolkey: this.state.readyStatus,
+            })
             .then(async () => {
               // --- 5) Get your own camera stream ---
 
@@ -183,19 +190,11 @@ class OvReact extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
+    const { ready } = this.state.readyStatus;
     return (
       <div className="container">
         {this.state.session !== undefined ? (
           <div id="session">
-            {/* <div id="session-header">
-              <input
-                className="btn btn-large btn-danger"
-                type="button"
-                id="buttonLeaveSession"
-                onClick={this.leaveSession}
-                value="Leave session"
-              />
-            </div> */}
             {this.props.rtcExit && this.leaveSession()}
             <div
               id="video-container"
@@ -214,7 +213,10 @@ class OvReact extends Component {
                   className="stream-container col-md-6 col-xs-6"
                   style={{ width: '24%' }}
                 >
-                  <UserVideoComponent streamManager={this.state.publisher} />
+                  <UserVideoComponent
+                    streamManager={this.state.publisher}
+                    ready={this.state.readyStatus}
+                  />
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
@@ -223,7 +225,10 @@ class OvReact extends Component {
                   className="stream-container col-md-6 col-xs-6"
                   style={{ width: '24%' }}
                 >
-                  <UserVideoComponent streamManager={sub} />
+                  <UserVideoComponent
+                    streamManager={sub}
+                    ready={this.state.readyStatus}
+                  />
                 </div>
               ))}
             </div>

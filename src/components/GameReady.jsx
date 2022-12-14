@@ -23,7 +23,7 @@ import {
 import RTC from './RTC';
 
 const GameReady = () => {
-  const [ready, setReady] = useState(true);
+  const [ready, setReady] = useState(false);
   const [trueAlert, setTrueAlert] = useState(false);
   const [pendingReady, setPendingReady] = useState([]);
   const [rtcExit, setRtcExit] = useState(false);
@@ -187,7 +187,12 @@ const GameReady = () => {
           </ReadyButton>
         </ReadyButtonSection>
         {/* 그냥여기 넣어봄 */}
-        <RTC param={param.id} nickname={nickname} rtcExit={rtcExit} />
+        <RTC
+          param={param.id}
+          nickname={nickname}
+          rtcExit={rtcExit}
+          ready={ready}
+        />
 
         <Users>
           {/* {userCameras.map((person) =>
