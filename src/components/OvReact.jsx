@@ -72,6 +72,7 @@ class OvReact extends Component {
     }
   }
 
+  //openVidu 개체를 가져오고 상태에서 세션 속성을 초기화 함
   joinSession() {
     // --- 1) Get an OpenVidu object ---
 
@@ -119,6 +120,7 @@ class OvReact extends Component {
         this.getToken().then((token) => {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+          //mySession 첫번째 매개변수는 최근 검색된 사용자의 토큰
           mySession
             .connect(token, { clientData: this.state.myUserName })
             .then(async () => {

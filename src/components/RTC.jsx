@@ -66,6 +66,7 @@ class OvReact extends Component {
 
     // --- 2) Init a session ---
     console.log('*****OV 뭐야', this.OV);
+    //OpenVidu에 대한 데이터들이 들어있었음
     console.log('*****OV.initSession 뭐야', this.OV.initSession());
     this.setState(
       {

@@ -21,8 +21,6 @@ import {
   giveSpy,
 } from '../redux/modules/gameSlice';
 import RTC from './RTC';
-import RTC2 from './RTCfunc';
-import RTC3 from './RTCfuncTest';
 
 const GameReady = () => {
   const [ready, setReady] = useState(true);
@@ -35,9 +33,6 @@ const GameReady = () => {
   const navigate = useNavigate();
   const userNick = useSelector((state) => state.room.userNickname);
   const nickname = cookies.nickname;
-
-  // console.log('너는 계속 찍히니?', userNick);
-  // console.log('이거 준비임', ready);
 
   //유저 기본 틀
   const initialState = [
@@ -66,7 +61,7 @@ const GameReady = () => {
       return userCameras;
     });
   }, [userCameras]);
-  console.log('유저 카메라', userCameras);
+  // console.log('유저 카메라', userCameras);
 
   //게임 준비 보냄
   const ReadyHandler = () => {
@@ -193,8 +188,7 @@ const GameReady = () => {
         </ReadyButtonSection>
         {/* 그냥여기 넣어봄 */}
         <RTC param={param.id} nickname={nickname} rtcExit={rtcExit} />
-        {/* <RTC2 meetingRoomId={param.id} userId={cookies.nickname} /> */}
-        {/* <RTC3 param={param.id} nickname={cookies.nickname} /> */}
+
         <Users>
           {/* {userCameras.map((person) =>
             person.boolkey === true ? (
