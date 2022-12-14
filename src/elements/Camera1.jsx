@@ -26,8 +26,8 @@ const Camera = ({ streamManager, ready }) => {
       // }
     }
   }, []);
-  console.log('streamManager::', streamManager);
-  console.log('videoRef::', videoRef);
+  // console.log('streamManager::', streamManager);
+  // console.log('videoRef::', videoRef);
   // console.log('person::', person);
   // console.log('getNicknameTag::', getNicknameTag());
   return (

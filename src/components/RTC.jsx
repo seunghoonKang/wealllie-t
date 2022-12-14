@@ -55,8 +55,8 @@ class OvReact extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log('-----prevProps 값', prevProps);
-    console.log('-----prevProps.ready 값', prevProps.ready);
+    // console.log('-----prevProps 값', prevProps);
+    // console.log('-----prevProps.ready 값', prevProps.ready);
     // console.log('-----this.state.ready 값', this.state.readyStatus);
     // console.log('-----prevProps', prevProps.nickname);
     if (this.state.readyStatus !== prevProps.ready) {
@@ -74,9 +74,9 @@ class OvReact extends Component {
     this.OV = new OpenVidu();
 
     // --- 2) Init a session ---
-    console.log('*****OV 뭐야', this.OV);
+    // console.log('*****OV 뭐야', this.OV);
     //OpenVidu에 대한 데이터들이 들어있었음
-    console.log('*****OV.initSession 뭐야', this.OV.initSession());
+    // console.log('*****OV.initSession 뭐야', this.OV.initSession());
     this.setState(
       {
         session: this.OV.initSession(),
@@ -91,11 +91,11 @@ class OvReact extends Component {
           // Subscribe to the Stream to receive it. Second parameter is undefined
           // so OpenVidu doesn't create an HTML video by its own
           var subscriber = mySession.subscribe(event.stream, undefined);
-          console.log('-----subscriber!-----', subscriber);
+          // console.log('-----subscriber!-----', subscriber);
           var subscribers = this.state.subscribers;
           subscribers.push(subscriber);
-          console.log('-----subscribers-----', subscribers);
-          console.log('-----publisher-----', this.state.publisher);
+          // console.log('-----subscribers-----', subscribers);
+          // console.log('-----publisher-----', this.state.publisher);
           // Update the state with the new subscribers
           this.setState({
             subscribers: subscribers,

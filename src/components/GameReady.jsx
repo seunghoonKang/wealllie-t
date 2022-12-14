@@ -195,8 +195,8 @@ const GameReady = () => {
           </ReadyLayoutSection>
         </ReadyLayout>
       )}
-      {gamePage === 1 && <GameStart />}
-      {gamePage === 2 && <GameVote />}
+      {gamePage === 1 && <GameStart userCameras={userCameras} />}
+      {gamePage === 2 && <GameVote userCameras={userCameras} />}
       <RTC
         param={param.id}
         nickname={nickname}
