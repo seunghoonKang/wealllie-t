@@ -211,6 +211,10 @@ class OvReact extends Component {
                     JSON.parse(this.state.publisher.stream.connection.data)
                       .clientData === person.nickname && (
                       <Camera
+                        stamp={this.props.stamp}
+                        setStamp={this.props.setStamp}
+                        voteStatus={this.props.voteStatus}
+                        setVoteStatus={this.props.setVoteStatus}
                         streamManager={this.state.publisher}
                         person={person.nickname}
                         ready={person.boolkey}
@@ -222,6 +226,10 @@ class OvReact extends Component {
                       JSON.parse(sub.stream.connection.data).clientData ===
                         person.nickname && (
                         <Camera
+                          stamp={this.props.stamp}
+                          setStamp={this.props.setStamp}
+                          voteStatus={this.props.voteStatus}
+                          setVoteStatus={this.props.setVoteStatus}
                           streamManager={sub}
                           person={person.nickname}
                           ready={person.boolkey}

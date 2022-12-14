@@ -78,8 +78,10 @@ const GameVote = ({
   스파이가 이겼는지 졌는지 'endGame'
   */
 
-  //내가 마지막으로 선택한 사람 닉네임 = stamp
-  console.log('stamp::', stamp);
+  useEffect(() => {
+    //내가 마지막으로 선택한 사람 닉네임 = stamp
+    console.log('stamp::', stamp);
+  }, [stamp]);
 
   //00:00 일때 미투표상태일시 현재 stamp 찍혀있는 사람으로 자동 emit
   useEffect(() => {
@@ -136,6 +138,7 @@ const GameVote = ({
   //전체투표 결과1 : spyAlive(true) 스파이가 이겼을때, 스파이 승리 화면 컴포넌트로 넘어가기
   useEffect(() => {
     spyAlive === true && dispatch(gameOperation(3));
+    console.log('스파이가 이겼다');
   }, [spyAlive]);
 
   //스파이가 제시어를 고른 뒤 게임 결과 (console말고는 다른점 없음,,) => GameEndContents에도 씀
