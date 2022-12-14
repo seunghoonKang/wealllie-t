@@ -16,6 +16,7 @@ class OvReact extends Component {
       session: undefined,
       publisher: undefined,
       subscribers: [],
+      readyStatus: props.ready,
     };
 
     //----- mySessionId에 param.id 를 props로 받아와서 넣어주면될듯
@@ -50,10 +51,13 @@ class OvReact extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps === true) {
-      console.log('this.state.rtcExit 값', this.state.rtcExit);
-      console.log('prevProps 값', prevProps);
-      this.leaveSession();
+    console.log('-----prevProps 값', prevProps);
+    console.log('-----prevProps.ready 값', prevProps.ready);
+    console.log('-----this.state.ready 값', this.state.readyStatus);
+    if (this.state.readyStatus !== prevProps.ready) {
+      this.setState({
+        readyStatus: prevProps.ready,
+      });
     }
   }
 
@@ -109,7 +113,10 @@ class OvReact extends Component {
           // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           mySession
-            .connect(token, { clientData: this.state.myUserName })
+            .connect(token, {
+              clientData: this.state.myUserName,
+              // boolkey: this.state.readyStatus,
+            })
             .then(async () => {
               // --- 5) Get your own camera stream ---
 
@@ -184,6 +191,7 @@ class OvReact extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
+    const { ready } = this.state.readyStatus;
     return (
       <div className="container">
         {this.state.session !== undefined ? (
@@ -206,7 +214,10 @@ class OvReact extends Component {
                   className="stream-container col-md-6 col-xs-6"
                   style={{ width: '24%' }}
                 >
-                  <UserVideoComponent streamManager={this.state.publisher} />
+                  <UserVideoComponent
+                    streamManager={this.state.publisher}
+                    ready={this.state.readyStatus}
+                  />
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
@@ -215,7 +226,10 @@ class OvReact extends Component {
                   className="stream-container col-md-6 col-xs-6"
                   style={{ width: '24%' }}
                 >
-                  <UserVideoComponent streamManager={sub} />
+                  <UserVideoComponent
+                    streamManager={sub}
+                    ready={this.state.readyStatus}
+                  />
                 </div>
               ))}
             </div>
