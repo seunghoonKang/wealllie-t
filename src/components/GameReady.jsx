@@ -18,6 +18,9 @@ import {
   giveCategory,
   giveSpy,
 } from '../redux/modules/gameSlice';
+import RTC from './RTC';
+import RTC2 from './RTCfuncTest'; //원래 RTC func였는데 오류떠서 RTC func Test로 수정
+import RTC3 from './RTCfuncTest';
 
 const GameReady = () => {
   const [ready, setReady] = useState(true);
@@ -27,9 +30,6 @@ const GameReady = () => {
   const param = useParams();
   const dispatch = useDispatch();
   const userNick = useSelector((state) => state.room.userNickname);
-
-  // console.log('너는 계속 찍히니?', userNick);
-  // console.log('이거 준비임', ready);
 
   //유저 기본 틀
   const initialState = [
@@ -58,7 +58,7 @@ const GameReady = () => {
       return userCameras;
     });
   }, [userCameras]);
-  console.log('유저 카메라', userCameras);
+  // console.log('유저 카메라', userCameras);
 
   //게임 준비 보냄
   const ReadyHandler = () => {
@@ -146,9 +146,13 @@ const GameReady = () => {
             <div onClick={ReadyHandler}>{ready ? '준비하기' : '준비완료'}</div>{' '}
           </ReadyButton>
         </ReadyButtonSection>
+        {/* 그냥여기 넣어봄 */}
 
+        {/* <RTC2 meetingRoomId={param.id} userId={cookies.nickname} /> */}
+        {/* <RTC3 param={param.id} nickname={cookies.nickname} /> */}
         <Users>
-          {userCameras.map((person) =>
+          <RTC param={param.id} nickname={cookies.nickname} />
+          {/* {userCameras.map((person) =>
             person.boolkey === true ? (
               <ReadyWrap key={person.id}>
                 <ReadyMediumWrap>
@@ -158,9 +162,14 @@ const GameReady = () => {
                 <ReadyNickName>{person.nickname}</ReadyNickName>
               </ReadyWrap>
             ) : (
-              <Camera person={person.nickname} key={person.id} />
+              // <RTC param={param.id} nickname={cookies.nickname} />
+              <Camera
+                person={person.nickname}
+                key={person.id}
+                param={param.id}
+              />
             )
-          )}
+          )} */}
         </Users>
       </ReadyLayoutSection>
     </ReadyLayout>
