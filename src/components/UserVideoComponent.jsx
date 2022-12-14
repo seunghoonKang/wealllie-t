@@ -56,6 +56,7 @@ const UserVideoComponent = (props) => {
           <div>
             <Name>{getNicknameTag()}</Name>
             {props.ready ? <p>준비돼써</p> : <p>준비안돼써</p>}
+            {/* {getReadyTag() ? <p>준비돼써</p> : <p>준비안돼써</p>} */}
             {/* <p>ready 상태 : {getReadyTag()}</p> */}
             {/* 여기에 쓴 이름이 모두 다 같은 이름으로 뜸 */}
           </div>

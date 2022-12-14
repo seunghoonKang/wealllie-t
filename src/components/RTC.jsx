@@ -2,6 +2,8 @@ import { OpenVidu } from 'openvidu-browser';
 import axios from 'axios';
 import React, { Component } from 'react';
 import UserVideoComponent from './UserVideoComponent';
+import Camera from '../elements/Camera1';
+import styled from 'styled-components';
 import './OvReactCss.css';
 const APPLICATION_SERVER_URL = 'https://minhyeongi.xyz/';
 class OvReact extends Component {
@@ -53,12 +55,71 @@ class OvReact extends Component {
   componentDidUpdate(prevProps) {
     console.log('-----prevProps 값', prevProps);
     console.log('-----prevProps.ready 값', prevProps.ready);
-    console.log('-----this.state.ready 값', this.state.readyStatus);
+    // console.log('-----this.state.ready 값', this.state.readyStatus);
+    // console.log('-----prevProps', prevProps.nickname);
     if (this.state.readyStatus !== prevProps.ready) {
       this.setState({
         readyStatus: prevProps.ready,
       });
+      // var mySession = this.state.session;
+      // this.getToken().then((token) => {
+      //   // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
+      //   // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+      //   mySession
+      //     .connect(token, {
+      //       clientData: this.state.myUserName,
+      //       boolkey: this.state.readyStatus,
+      //       // boolkey: prevProps.ready,
+      //     })
+      //     .then(async () => {
+      //       // --- 5) Get your own camera stream ---
+
+      //       // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
+      //       // element: we will manage it on our own) and with the desired properties
+      //       let publisher = await this.OV.initPublisherAsync(undefined, {
+      //         audioSource: undefined, // The source of audio. If undefined default microphone
+      //         videoSource: undefined, // The source of video. If undefined default webcam
+      //         publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
+      //         publishVideo: true, // Whether you want to start publishing with your video enabled or not
+      //         resolution: '640x480', // The resolution of your video
+      //         frameRate: 30, // The frame rate of your video
+      //         insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
+      //         mirror: false, // Whether to mirror your local video or not
+      //       });
+
+      //       // --- 6) Publish your stream ---
+
+      //       mySession.publish(publisher);
+
+      //       // Obtain the current video device in use
+      //       var devices = await this.OV.getDevices();
+      //       var videoDevices = devices.filter(
+      //         (device) => device.kind === 'videoinput'
+      //       );
+      //       var currentVideoDeviceId = publisher.stream
+      //         .getMediaStream()
+      //         .getVideoTracks()[0]
+      //         .getSettings().deviceId;
+      //       var currentVideoDevice = videoDevices.find(
+      //         (device) => device.deviceId === currentVideoDeviceId
+      //       );
+
+      //       // Set the main video in the page to display our webcam and store our Publisher
+      //       this.setState({
+      //         currentVideoDevice: currentVideoDevice,
+      //         publisher: publisher,
+      //       });
+      //     })
+      //     .catch((error) => {
+      //       console.log(
+      //         'There was an error connecting to the session:',
+      //         error.code,
+      //         error.message
+      //       );
+      //     });
+      // });
     }
+    //readyStatus 를 보내기 위해
   }
 
   // joinSession() {
@@ -89,6 +150,7 @@ class OvReact extends Component {
           var subscribers = this.state.subscribers;
           subscribers.push(subscriber);
           console.log('-----subscribers-----', subscribers);
+          console.log('-----publisher-----', this.state.publisher);
           // Update the state with the new subscribers
           this.setState({
             subscribers: subscribers,
@@ -194,22 +256,84 @@ class OvReact extends Component {
     const { ready } = this.state.readyStatus;
     return (
       <div className="container">
-        {this.state.session !== undefined ? (
+        {this.state.session !== undefined && (
           <div id="session">
             {this.props.rtcExit && this.leaveSession()}
-            <div
+            <Users>
+              {this.props.userCameras.map((person) => (
+                <>
+                  {this.state.publisher !== undefined &&
+                    JSON.parse(this.state.publisher.stream.connection.data)
+                      .clientData === person.nickname && (
+                      <Camera
+                        streamManager={this.state.publisher}
+                        person={person.nickname}
+                      />
+                      //   <div
+                      //     className="stream-container col-md-6 col-xs-6"
+                      //     style={{ width: '24%' }}
+                      //   >
+                      //     <UserVideoComponent
+                      //   streamManager={this.state.publisher}
+                      //   ready={this.state.readyStatus}
+                      // />
+                      //   </div>
+                    )}
+                  {this.state.subscribers.map(
+                    (sub, i) =>
+                      JSON.parse(sub.stream.connection.data).clientData ===
+                        person.nickname && (
+                        <Camera streamManager={sub} person={person.nickname} />
+                      )
+                      //   <div
+                      //     key={i}
+                      //     className="stream-container col-md-6 col-xs-6"
+                      //     style={{ width: '24%' }}
+                      //   >
+                      //     <UserVideoComponent
+                      //   streamManager={sub}
+                      //   ready={this.state.readyStatus}
+                      // />
+                      //   </div>
+                  )}
+                </>
+              ))}
+
+              {/* {userCameras.map((person) =>
+            person.boolkey === true ? (
+              <ReadyWrap key={person.id}>
+                <ReadyMediumWrap>
+                  <Ready />
+                </ReadyMediumWrap>
+                <Prepared />
+                <ReadyNickName>{person.nickname}</ReadyNickName>
+              </ReadyWrap>
+            ) : (
+              // <RTC param={param.id} nickname={cookies.nickname} />
+              <Camera
+                person={person.nickname}
+                key={person.id}
+                param={param.id}
+              />
+            )
+          )} */}
+            </Users>
+            {/* <div
               id="video-container"
               className="col-md-4"
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
-                justifyContent: 'space-evenly', //가로 띄우기
+                justifyContent: 'space-between', //가로 띄우기
                 width: '100%',
+                minWidth: '880px',
                 height: '50vh',
                 backgroundColor: 'pink',
+                padding: '0',
+                margin: '0',
               }}
             >
-              {this.state.publisher !== undefined ? (
+              {this.state.publisher !== undefined && (
                 <div
                   className="stream-container col-md-6 col-xs-6"
                   style={{ width: '24%' }}
@@ -219,7 +343,7 @@ class OvReact extends Component {
                     ready={this.state.readyStatus}
                   />
                 </div>
-              ) : null}
+              )}
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={i}
@@ -232,9 +356,9 @@ class OvReact extends Component {
                   />
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
-        ) : null}
+        )}
       </div>
     );
   }
@@ -286,3 +410,15 @@ class OvReact extends Component {
 }
 
 export default OvReact;
+
+const Users = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly; //가로 띄우기
+  align-content: space-evenly; //세로 띄우기
+  width: 100%;
+  min-width: 880px;
+  height: 50vh;
+  min-height: 312px;
+  margin: 1vh 0;
+`;
