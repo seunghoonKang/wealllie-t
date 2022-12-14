@@ -4,6 +4,9 @@ import MainHeader from './gameready/MainHeader';
 import MediumHeader from './gameready/MediumHeader';
 import Camera from '../elements/Camera1';
 import Button from '../elements/Button';
+import GameEnd from './GameEnd';
+import GameStart from './GameStart';
+import GameVote from './GameVote';
 import { useState, useEffect } from 'react';
 import { socket } from '../shared/socket';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -61,7 +64,7 @@ const GameReady = () => {
       return userCameras;
     });
   }, [userCameras]);
-  // console.log('유저 카메라', userCameras);
+  console.log('유저 카메라', userCameras);
 
   //게임 준비 보냄
   const ReadyHandler = () => {
@@ -78,9 +81,9 @@ const GameReady = () => {
   }, [pendingReady]);
 
   //닉네임 변경
-  socket.on('userNickname', (userNickname) => {
-    dispatch(getUserNickname(userNickname));
-  });
+  // socket.on('userNickname', (userNickname) => {
+  //   dispatch(getUserNickname(userNickname));
+  // });
 
   //불값 변경
   const GameReadyBool = () => {
@@ -179,6 +182,19 @@ const GameReady = () => {
       </JinyoungHeader>
       <MediumHeader></MediumHeader>
       <ReadyLayoutSection>
+        {/* {gameOperation === 0 && (
+          <ReadyButtonSection>
+            <h1>준비 버튼을 클릭하세요 ! </h1>
+            <span>모든 플레이어가 준비되면 자동으로 게임이 시작됩니다.</span>
+            <ReadyButton>
+              <div onClick={ReadyHandler}>
+                {ready ? '준비하기' : '준비완료'}
+              </div>{' '}
+            </ReadyButton>
+          </ReadyButtonSection>
+        )}
+        {gameOperation === 1 && <GameStart />}
+        {gameOperation === 2 && <GameVote />} */}
         <ReadyButtonSection>
           <h1>준비 버튼을 클릭하세요 ! </h1>
           <span>모든 플레이어가 준비되면 자동으로 게임이 시작됩니다.</span>
@@ -186,7 +202,6 @@ const GameReady = () => {
             <div onClick={ReadyHandler}>{ready ? '준비하기' : '준비완료'}</div>{' '}
           </ReadyButton>
         </ReadyButtonSection>
-        {/* 그냥여기 넣어봄 */}
         <RTC
           param={param.id}
           nickname={nickname}
@@ -194,27 +209,6 @@ const GameReady = () => {
           ready={ready}
           userCameras={userCameras}
         />
-
-        {/* <Users>
-          {userCameras.map((person) =>
-            person.boolkey === true ? (
-              <ReadyWrap key={person.id}>
-                <ReadyMediumWrap>
-                  <Ready />
-                </ReadyMediumWrap>
-                <Prepared />
-                <ReadyNickName>{person.nickname}</ReadyNickName>
-              </ReadyWrap>
-            ) : (
-              // <RTC param={param.id} nickname={cookies.nickname} />
-              <Camera
-                person={person.nickname}
-                key={person.id}
-                param={param.id}
-              />
-            )
-          )}
-        </Users> */}
       </ReadyLayoutSection>
     </ReadyLayout>
   );
@@ -237,7 +231,6 @@ const ReadyLayoutSection = styled.div`
 `;
 
 const ReadyButtonSection = styled.div`
-  border: orange;
   min-height: 160px;
   height: 22vh;
   margin: 1vh 1%;
