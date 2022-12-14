@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import OpenViduVideoComponent from './OvVideo';
+import React, { Component, useEffect, useRef } from 'react';
+// import OpenViduVideoComponent from './OvVideo';
 import './UserVideo.css';
 import { useCookies } from 'react-cookie';
 
@@ -28,18 +28,27 @@ import { useCookies } from 'react-cookie';
 
 const UserVideoComponent = (props) => {
   const [cookies] = useCookies(['nickname']);
+  const videoRef = useRef();
+
+  useEffect(() => {
+    if (props && !!videoRef) {
+      props.streamManager.addVideoElement(videoRef.current);
+    }
+  }, []);
+  console.log('myUserName', props.myUserName);
 
   return (
     <div>
-      {props.streamManager !== undefined ? (
+      {props.streamManager !== undefined && (
         <div className="streamcomponent">
-          <OpenViduVideoComponent streamManager={props.streamManager} />
+          {/* <OpenViduVideoComponent streamManager={props.streamManager} /> */}
+          <video autoPlay={true} ref={videoRef} />
           <div>
-            <p>{cookies.nickname}</p>
-            {/* props.nickname 하니까 모두가 내이름으로 뜸 */}
+            <p>{props.myUserName}</p>
+            {/* 여기에 쓴 이름이 모두 다 같은 이름으로 뜸 */}
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
