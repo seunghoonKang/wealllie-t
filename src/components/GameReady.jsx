@@ -123,7 +123,7 @@ const GameReady = () => {
         console.log('이건 카테고리', gameStart);
         dispatch(giveCategory(gameStart));
       });
-      const nextPage = setTimeout(() => {
+      setTimeout(() => {
         setTrueAlert(false);
         dispatch(gameOperation(1));
       }, 5000);
