@@ -11,19 +11,20 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-const GameEnd = () => {
+const GameEnd = ({ setRtcExit }) => {
   const navigate = useNavigate();
   const param = useParams();
   const [cookies] = useCookies(['nickname']);
   // // const [spyWin, setSpyWin] = useState(true);
   // const gameResult = useSelector((state) => state.game.gameResult);
 
-  const GoOutBtn = () => {
-    socket.emit('leaveRoom', param.id, cookies.nickname);
-    socket.on('leaveRoom', () => {
+  const GoOutBtn = async () => {
+    await setRtcExit(true);
+    await socket.emit('leaveRoom', param.id, cookies.nickname);
+    await socket.on('leaveRoom', () => {
       navigate('/home');
     });
-    navigate('/home');
+    await navigate('/home');
   };
 
   //스파이가 제시어를 고른 뒤 게임 결과

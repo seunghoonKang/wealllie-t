@@ -98,18 +98,18 @@ const GameEndContents = () => {
           <SpyName>{spy}</SpyName>
         </CorrectCard>
       </GameCardSection>
-      <EndGameCameraEntireDiv>
+      {/* <EndGameCameraEntireDiv>
         {userCameras.map((person, i) => (
           <Camera3 nickname={person} key={i} />
         ))}
-      </EndGameCameraEntireDiv>
+      </EndGameCameraEntireDiv> */}
     </GameEndEntireContainer>
   );
 };
 
 const GameEndEntireContainer = styled.div`
   width: 100%;
-  min-height: 570px;
+  //min-height: 570px;
   height: calc(90vh - 100px);
   background-color: ${(props) => props.theme.color.gray3};
 `;
@@ -118,7 +118,7 @@ const GameCardSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 380px;
+  //min-height: 380px;
   height: 53vh;
   width: 100%;
   gap: 16px;

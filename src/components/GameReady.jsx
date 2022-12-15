@@ -202,6 +202,7 @@ const GameReady = () => {
         />
       )}
       {/* <GameVote userCameras={userCameras} /> */}
+      {gamePage === 3 && <GameEnd setRtcExit={setRtcExit} />}
       <RTC
         param={param.id}
         nickname={nickname}
