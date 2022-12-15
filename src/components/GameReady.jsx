@@ -30,7 +30,7 @@ const GameReady = () => {
   const [trueAlert, setTrueAlert] = useState(false);
   const [pendingReady, setPendingReady] = useState([]);
   const [rtcExit, setRtcExit] = useState(false);
-
+  const [voteStatus, setVoteStatus] = useState(false);
   const [cookies] = useCookies(['nickname']);
   const param = useParams();
   const dispatch = useDispatch();
@@ -192,14 +192,27 @@ const GameReady = () => {
         </ReadyLayout>
       )}
       {gamePage === 1 && <GameStart userCameras={userCameras} />}
-      {gamePage === 2 && <GameVote userCameras={userCameras} />}
+      {gamePage === 2 && (
+        <GameVote
+          userCameras={userCameras}
+          voteStatus={voteStatus}
+          setVoteStatus={setVoteStatus}
+          stamp={stamp}
+          setStamp={setStamp}
+        />
+      )}
       {/* <GameVote userCameras={userCameras} /> */}
+      {gamePage === 3 && <GameEnd setRtcExit={setRtcExit} />}
       <RTC
         param={param.id}
         nickname={nickname}
         rtcExit={rtcExit}
         ready={ready}
         userCameras={userCameras}
+        stamp={stamp}
+        setStamp={setStamp}
+        voteStatus={voteStatus}
+        setVoteStatus={setVoteStatus}
       />
     </>
   );
