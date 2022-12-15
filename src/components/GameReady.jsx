@@ -110,32 +110,38 @@ const GameReady = () => {
   ];
   const trueUser = currentReadyUSer.filter((user) => user === true);
 
+  console.log('currentUser:::', currentUser);
+  console.log('trueUser:::', trueUser);
+
   //접속인원 4명 이상 + 현재 접속인원 === true인원 맞는지 확인
   useEffect(() => {
-    if (currentUser >= 4 && currentUser === trueUser.length) {
-      //스파이 유저 받는 소켓
-      socket.on('spyUser', (spyUser) => {
-        console.log('이건 스파이', spyUser);
-        dispatch(giveSpy(spyUser));
-      });
-      //카테고리 받는 소켓
-      socket.on('gameStart', (gameStart) => {
-        console.log('이건 카테고리', gameStart);
-        dispatch(giveCategory(gameStart));
-      });
-      setTrueAlert(!trueAlert);
-      const nextGameOperation = () => {
-        setTimeout(() => {
-          setTrueAlert(false);
-          dispatch(gameOperation(1));
-        }, 5000);
-      };
-      nextGameOperation();
-      return () => {
-        clearTimeout(nextGameOperation);
-      };
-    } else if (currentUser > trueUser.length) {
-      setTrueAlert(false);
+    if (gamePage === 0) {
+      if (currentUser >= 4 && currentUser === trueUser.length) {
+        //스파이 유저 받는 소켓
+        socket.on('spyUser', (spyUser) => {
+          console.log('이건 스파이', spyUser);
+          dispatch(giveSpy(spyUser));
+        });
+        //카테고리 받는 소켓
+        socket.on('gameStart', (gameStart) => {
+          console.log('이건 카테고리', gameStart);
+          dispatch(giveCategory(gameStart));
+        });
+        setTrueAlert(!trueAlert);
+        const nextGameOperation = () => {
+          setTimeout(() => {
+            setTrueAlert(false);
+            dispatch(gameOperation(1));
+            console.log('gameOperation(1) 보내줌');
+          }, 5000);
+        };
+        nextGameOperation();
+        return () => {
+          clearTimeout(nextGameOperation);
+        };
+      } else if (currentUser > trueUser.length) {
+        setTrueAlert(false);
+      }
     }
   }, [pendingReady]);
 
