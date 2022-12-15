@@ -123,11 +123,17 @@ const GameReady = () => {
         console.log('이건 카테고리', gameStart);
         dispatch(giveCategory(gameStart));
       });
-      setTimeout(() => {
-        setTrueAlert(false);
-        dispatch(gameOperation(1));
-      }, 5000);
       setTrueAlert(!trueAlert);
+      const nextGameOperation = () => {
+        setTimeout(() => {
+          setTrueAlert(false);
+          dispatch(gameOperation(1));
+        }, 5000);
+      };
+      nextGameOperation();
+      return () => {
+        clearTimeout(nextGameOperation);
+      };
     } else if (currentUser > trueUser.length) {
       setTrueAlert(false);
     }
