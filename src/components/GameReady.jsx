@@ -127,7 +127,6 @@ const GameReady = () => {
         setTrueAlert(false);
         dispatch(gameOperation(1));
       }, 5000);
-      clearTimeout(nextPage);
       setTrueAlert(!trueAlert);
     } else if (currentUser > trueUser.length) {
       setTrueAlert(false);
