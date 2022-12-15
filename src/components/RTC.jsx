@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import UserVideoComponent from './UserVideoComponent';
 import Camera from '../elements/Camera1';
 import styled from 'styled-components';
+import GameEndContents from './gameend/GameEndContents';
 
 const APPLICATION_SERVER_URL = 'https://minhyeongi.xyz/';
 
@@ -207,45 +208,64 @@ class OvReact extends Component {
                 {this.props.rtcExit && this.leaveSession()}
                 <EndGameUsers>
                   {this.props.userCameras.map((person) => (
-                    <>
-                      {this.state.publisher !== undefined &&
-                        JSON.parse(this.state.publisher.stream.connection.data)
-                          .clientData === person.nickname &&
-                        this.props.spy !== person.nickname && (
-                          <Camera
-                            stamp={this.props.stamp}
-                            setStamp={this.props.setStamp}
-                            voteStatus={this.props.voteStatus}
-                            setVoteStatus={this.props.setVoteStatus}
-                            streamManager={this.state.publisher}
-                            person={person.nickname}
-                            ready={person.boolkey}
-                            // key={person.id}
-                          />
-                        )}
-                      {this.state.subscribers.map(
+                    <div>
+                      <div>
+                        {/* 스파이화면 */}
+                        {this.state.publisher !== undefined &&
+                          JSON.parse(
+                            this.state.publisher.stream.connection.data
+                          ).clientData === person.nickname &&
+                          this.props.spy == person.nickname && (
+                            <GameEndContents
+                              streamManager={this.state.publisher}
+                            />
+                          )}
+                        {/* {this.state.subscribers.map(
                         (sub, i) =>
                           JSON.parse(sub.stream.connection.data).clientData ===
                             person.nickname &&
+                          this.props.spy == person.nickname && (
+                            <GameEndContents streamManager={sub} />
+                          )
+                      )} */}
+                      </div>
+                      <NoneSpyUsers>
+                        {/* 스파이를 제외한 나머지 사람들 */}
+                        {this.state.publisher !== undefined &&
+                          JSON.parse(
+                            this.state.publisher.stream.connection.data
+                          ).clientData === person.nickname &&
                           this.props.spy !== person.nickname && (
                             <Camera
                               stamp={this.props.stamp}
                               setStamp={this.props.setStamp}
                               voteStatus={this.props.voteStatus}
                               setVoteStatus={this.props.setVoteStatus}
-                              streamManager={sub}
+                              streamManager={this.state.publisher}
                               person={person.nickname}
                               ready={person.boolkey}
                               // key={person.id}
                             />
-                          )
-                      )}
-                      {/* {person.nickname === '' && (
-                    <Camera
-                    // key={person.id}
-                    />
-                  )} */}
-                    </>
+                          )}
+                        {this.state.subscribers.map(
+                          (sub, i) =>
+                            JSON.parse(sub.stream.connection.data)
+                              .clientData === person.nickname &&
+                            this.props.spy !== person.nickname && (
+                              <Camera
+                                stamp={this.props.stamp}
+                                setStamp={this.props.setStamp}
+                                voteStatus={this.props.voteStatus}
+                                setVoteStatus={this.props.setVoteStatus}
+                                streamManager={sub}
+                                person={person.nickname}
+                                ready={person.boolkey}
+                                // key={person.id}
+                              />
+                            )
+                        )}
+                      </NoneSpyUsers>
+                    </div>
                   ))}
                 </EndGameUsers>
               </div>
@@ -360,19 +380,44 @@ const Users = styled.div`
   align-content: space-evenly; //세로 띄우기
   width: 100%;
   min-width: 880px;
-  height: 50vh;
-  min-height: 360px;
+  /* height: 50vh;
+  min-height: 360px; */
   margin: 1vh 0;
 `;
 
 const EndGameUsers = styled.div`
-  display: flex;
   /* flex-wrap: wrap; */
-  justify-content: space-evenly; //가로 띄우기
-  align-content: space-evenly; //세로 띄우기
   width: calc(100% + 350px);
   min-width: 880px;
-  height: 30vh;
+  /* height: 30vh; */
   /* min-height: 360px; */
   /* margin: 1vh 0; */
+  background-color: pink;
+`;
+
+const NoneSpyUsers = styled.div`
+  /* width: 100%;
+  display: flex;
+  justify-content: space-evenly; //가로 띄우기
+  align-content: space-evenly; //세로 띄우기 */
+  -webkit-appearance: none;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-lines: single;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+
+  /* flex-wrap: wrap; */
+  /* justify-content: space-evenly; //가로 띄우기 */
+  /* align-content: space-evenly; //세로 띄우기 */
+  /* width: 100%; */
+  /* min-width: 880px; */
+  /* height: 50vh;
+  min-height: 360px; */
+  /* height: 300px; */
 `;

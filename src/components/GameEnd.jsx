@@ -52,7 +52,7 @@ const GameEnd = ({ setRtcExit }) => {
         </Button>
       </LogoImg>
       <GameEndHeader />
-      <GameEndContents />
+      {/* <GameEndContents /> */}
     </GameEndEntireContainer>
   );
 };
@@ -65,7 +65,7 @@ const LogoImg = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
+  margin: 14px 0;
 `;
 
 export default GameEnd;

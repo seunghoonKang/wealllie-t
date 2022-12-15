@@ -6,9 +6,11 @@ import Camera3 from '../../elements/Camera3';
 import SelectCategoryImg from '../gamestart/SelectCategoryImg';
 import { socket } from '../../shared/socket';
 import { ReactComponent as WinkCat } from '../../assets/wink_cat.svg';
+import { useRef } from 'react';
 
-const GameEndContents = () => {
+const GameEndContents = ({ streamManager }) => {
   const param = useParams();
+  const videoRef = useRef();
   const answerWord = useSelector((state) => state.game.sendCategory.answerWord);
   const category = useSelector((state) => state.game.sendCategory.category);
   const spy = useSelector((state) => state.game.spy);
@@ -83,20 +85,35 @@ const GameEndContents = () => {
     });
   }, []);
 
+  // 스파이화면 띄우기
+  useEffect(() => {
+    if (streamManager && !!videoRef) {
+      streamManager.addVideoElement(videoRef.current);
+    }
+  }, []);
+
   return (
     <GameEndEntireContainer>
       <GameCardSection>
         <CategoryImg>
-          <div>
-            <AnswerCategoryDiv>
-              {category} / {answerWord}
-            </AnswerCategoryDiv>
-          </div>
+          <AnswerCategoryDiv>
+            {category} / {answerWord}
+          </AnswerCategoryDiv>
           <SelectCategoryImg category={category} width="513" height="238" />
         </CategoryImg>
         <CorrectCard>
-          <WinkCat />
-          <SpyName>{spy}</SpyName>
+          {streamManager !== undefined && (
+            <div style={{ objectFit: 'cover', overflow: 'hidden' }}>
+              <video
+                autoPlay={true}
+                ref={videoRef}
+                width="100%"
+                // style={{ objectFit: 'cover' }}
+              />
+            </div>
+          )}
+          {/* <WinkCat /> */}
+          <SpyName>{spy} 님이 스파이였습니다!</SpyName>
         </CorrectCard>
       </GameCardSection>
       {/* <EndGameCameraEntireDiv>
@@ -109,9 +126,11 @@ const GameEndContents = () => {
 };
 
 const GameEndEntireContainer = styled.div`
+  /* width: calc(200% + 300px); */
   width: 100%;
   //min-height: 570px;
   /* height: calc(76vh - 100px); */
+  height: 53vh;
   background-color: ${(props) => props.theme.color.gray3};
 `;
 
@@ -122,6 +141,7 @@ const GameCardSection = styled.section`
   //min-height: 380px;
   height: 53vh;
   width: 100%;
+  /* width: calc(100% + 350px); */
   gap: 16px;
 `;
 
@@ -143,6 +163,7 @@ const AnswerCategoryDiv = styled.div`
 
 const CategoryImg = styled.div`
   width: 50vw;
+  min-width: 610px;
   height: 50vh;
   display: flex;
   flex-direction: column;
@@ -157,6 +178,7 @@ const CategoryImg = styled.div`
 const CorrectCard = styled.div`
   position: relative;
   width: 50vw;
+  min-width: 610px;
   height: 50vh;
   background-color: ${(props) => props.theme.color.gray1};
   border-radius: 10px;
@@ -168,9 +190,9 @@ const CorrectCard = styled.div`
 
 const SpyName = styled.div`
   position: absolute;
-  top: 43vh;
+  bottom: 10px;
   left: 16px;
-  width: 12rem;
+  padding: 10px 20px;
   height: 40px;
   display: flex;
   justify-content: center;
