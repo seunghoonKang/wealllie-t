@@ -201,6 +201,7 @@ const ChatLayout = styled.div`
   border-radius: 10px;
   position: relative;
   margin-left: 10px;
+
   /* //채팅방 열고 닫기 코드
   position: absolute;
   top: 0;

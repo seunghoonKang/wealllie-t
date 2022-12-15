@@ -44,7 +44,7 @@ const UserInfo = ({ roomUserOpenModal, setRoomUserOpenModal }) => {
             <Profil>
               <img src={getUserInfo.profileImg} />
             </Profil>
-            <UserNick> getUserInfo.nickname</UserNick>
+            <UserNick> {getUserInfo.nickname}</UserNick>
             <MemberInfo>
               <div>스파이 승률</div>
               {getUserInfo.spyWinRating}%
@@ -138,6 +138,7 @@ const ProfilWrap = styled.div`
   justify-content: center;
   gap: 12px;
   margin: 5px;
+  flex-direction: column;
 `;
 
 const Profil = styled.div`
