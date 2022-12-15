@@ -13,6 +13,7 @@ import { gameOperation } from '../../redux/modules/gameSlice';
 const GameStartHeader = ({ setEarlyVote, userCameras }) => {
   const [modalStatus, setModalStatus] = useState(false);
   const [disabledBtn, setDisabledBtn] = useState('투표준비');
+  const [earlyVoteInfo, setEarlyVoteInfo] = useState();
   const [cookies] = useCookies(['nickname']);
   const userNickname = useSelector((state) => state.room.userNickname);
   const realUser = userNickname.filter((user) => user !== '');
@@ -20,7 +21,6 @@ const GameStartHeader = ({ setEarlyVote, userCameras }) => {
   const dispatch = useDispatch();
   const param = useParams();
 
-  const [earlyVoteInfo, setEarlyVoteInfo] = useState();
   // const tempGoOutBtn = () => {
   //   //나가기 버튼 눌렀을 때 퇴장메세지 이벤트 emit
   //   socket.emit('leaveRoomMsg', param.id, cookies.nickname);

@@ -1,37 +1,24 @@
 //이건 게임 스타트
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { socket } from '../shared/socket';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import { useParams } from 'react-router-dom';
-import {
-  gameOperation,
-  giveCategory,
-  giveSpy,
-} from '../redux/modules/gameSlice';
-import Camera from '../elements/Camera2';
+import { gameOperation } from '../redux/modules/gameSlice';
 import GameStartHeader from './gamestart/GameStartHeader';
 import styled from 'styled-components';
 import SelectCategoryImg from './gamestart/SelectCategoryImg';
 import CorrectCardSection from './gamestart/CorrectCardSection';
 import GameStartTimerSection from './gamestart/GameStartTimerSection';
 import CommonModal from '../elements/CommonModal';
-import { getUserNickname } from '../redux/modules/roomSlice';
-import RTC from './RTC';
 
 const GameStart = ({ userCameras }) => {
   const dispatch = useDispatch();
-  // const userNickname = useSelector((state) => state.room.userNickname);
-  // const category = useSelector((state) => state.game.category);
   const category = useSelector((state) => state.game.sendCategory.category);
-  const gamePage = useSelector((state) => state.game.gamePage);
   const [modalStatus, setModalStatus] = useState(false);
   const [earlyVote, setEarlyVote] = useState(false);
+  const [timerZero, setTimerZero] = useState(false);
   const [cookies] = useCookies(['nickname']);
-  const param = useParams();
-  // let totalTime = 10000;
-  let totalTime = 300000;
   const nickname = cookies.nickname;
 
   // let initialState = [
@@ -66,34 +53,37 @@ const GameStart = ({ userCameras }) => {
   // }, []);
 
   /* 시간되면 모달 띄우기 7분으로 따라가기 */
-  const votePage = () => {
-    setTimeout(() => {
+  // const votePage = () => {
+  //   setTimeout(() => {
+
+  //   }, totalTime);
+  // };
+  useEffect(() => {
+    if (timerZero) {
       setModalStatus(true);
-    }, totalTime);
-  };
+    }
+  }, [timerZero]);
 
   //시간 다되면 알아서 투표페이지로 이동하기
   //모달창 이후에 dispatch가 돼야 해서
   //모달창 이후 7초 추가함
   const changeGameOperation = () => {
-    setTimeout(() => {
-      setModalStatus(false);
-      if (gamePage === 1) {
+    if (modalStatus) {
+      setTimeout(() => {
+        setModalStatus(false);
         dispatch(gameOperation(2));
-      } else {
-        return;
-      }
-    }, totalTime + 7000);
+      }, 5000);
+    }
   };
 
   useEffect(() => {
-    votePage();
+    //votePage();
     changeGameOperation();
     return () => {
-      clearTimeout(votePage);
+      //clearTimeout(votePage);
       clearTimeout(changeGameOperation);
     };
-  }, []);
+  }, [modalStatus]);
 
   return (
     <>
@@ -112,7 +102,10 @@ const GameStart = ({ userCameras }) => {
       <GameEntireContainer>
         <GameCardSection>
           <Question>
-            <GameStartTimerSection />
+            <GameStartTimerSection
+              timerZero={timerZero}
+              setTimerZero={setTimerZero}
+            />
             <CategoryImgDiv>
               <SelectCategoryImg category={category} width="424" height="197" />
             </CategoryImgDiv>
