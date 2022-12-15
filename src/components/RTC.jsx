@@ -390,7 +390,7 @@ const EndGameUsers = styled.div`
   min-width: 880px;
   height: 30vh;
   min-height: 240px;
-  background-color: pink;
+  /* background-color: pink; */
   padding: 20px 0;
 `;
 
