@@ -198,7 +198,7 @@ const GameReady = () => {
           </ReadyLayoutSection>
         </ReadyLayout>
       )}
-      {gamePage === 1 && <GameStart userCameras={userCameras} />}
+      {gamePage === 0 && <GameStart userCameras={userCameras} />}
       {gamePage === 2 && (
         <GameVote
           userCameras={userCameras}
@@ -209,7 +209,7 @@ const GameReady = () => {
         />
       )}
       {/* <GameVote userCameras={userCameras} /> */}
-      {gamePage === 0 && <GameEnd setRtcExit={setRtcExit} />}
+      {gamePage === 1 && <GameEnd setRtcExit={setRtcExit} />}
       <RTC
         param={param.id}
         nickname={nickname}

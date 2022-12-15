@@ -2,12 +2,12 @@ import React from 'react';
 import Timer from '../../elements/Timer';
 import styled from 'styled-components';
 
-const GameStartTimerSection = () => {
+const GameStartTimerSection = ({ timerZero, setTimerZero }) => {
   return (
     <TimerContainer>
       <TimerDiv>
         <MinWidthTimerDiv>
-          <Timer min="5" />
+          <Timer min="5" timerZero={timerZero} setTimerZero={setTimerZero} />
         </MinWidthTimerDiv>
       </TimerDiv>
     </TimerContainer>
