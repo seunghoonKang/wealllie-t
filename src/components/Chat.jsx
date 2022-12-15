@@ -162,7 +162,12 @@ const Chat = () => {
       </ChatRow>
       <Form onSubmit={msgSubmitHandler}>
         {/* <p>프로필?</p> */}
-        <input type="text" ref={msgInput} placeholder="여따 할말혀!" required />
+        <input
+          type="text"
+          ref={msgInput}
+          placeholder="채팅 입력해주세요"
+          required
+        />
         <button>
           <SendIcon />
         </button>

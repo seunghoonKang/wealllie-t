@@ -29,8 +29,8 @@ const GameReady = () => {
   const [ready, setReady] = useState(true);
   const [trueAlert, setTrueAlert] = useState(false);
   const [pendingReady, setPendingReady] = useState([]);
-  const [pendingList, setPendingList] = useState([]);
   const [rtcExit, setRtcExit] = useState(false);
+  const [voteStatus, setVoteStatus] = useState(false);
   const [cookies] = useCookies(['nickname']);
   const param = useParams();
   const dispatch = useDispatch();
@@ -39,7 +39,6 @@ const GameReady = () => {
   const gamePage = useSelector((state) => state.game.gamePage);
   const nickname = cookies.nickname;
   const [stamp, setStamp] = useState(`${nickname}`); //기본값이 본인으로 선택
-  const [voteStatus, setVoteStatus] = useState(false);
 
   //유저 기본 틀
   const initialState = [
@@ -84,35 +83,16 @@ const GameReady = () => {
     console.log('게임레디 확인', pendingReady);
   }, [pendingReady]);
 
-  useEffect(() => {
-    socket.on('readyList', (readyList) => setPendingList(readyList));
-  });
-
-  //불값 변경 (밑에 게임리스트 안되면 이거 해야할듯)
-  // const GameReadyBool = () => {
-  //   for (let int = 0; int < 8; int++) {
-  //     if (userCameras[int].nickname === pendingReady[0]?.nickname) {
-  //       userCameras[int].boolkey = pendingReady[0].boolkey;
-  //     }
-  //   }
-  //   return userCameras;
-  // };
-  // GameReadyBool();
-
-  console.log('받아오는 값 확인', pendingList);
-  const GameListCheck = () => {
-    for (let num = 0; num < pendingList.length; num++) {
-      if (pendingList[num].boolkey === 'true') {
-        userCameras[num].boolkey = true;
-      } else if (pendingList[num].boolkey === 'false') {
-        userCameras[num].boolkey = false;
+  //불값 변경
+  const GameReadyBool = () => {
+    for (let int = 0; int < 8; int++) {
+      if (userCameras[int].nickname === pendingReady[0]?.nickname) {
+        userCameras[int].boolkey = pendingReady[0].boolkey;
       }
     }
     return userCameras;
   };
-  GameListCheck();
-
-  console.log('새로운 유저 카메라 담긴 배열', userCameras);
+  GameReadyBool();
 
   //준비한 유저 숫자
   const currentUser = userCameras.filter((user) => user.nickname !== '').length;
@@ -127,7 +107,6 @@ const GameReady = () => {
     userCameras[7].boolkey,
   ];
   const trueUser = currentReadyUSer.filter((user) => user === true);
-  console.log('과연 여기 트루 유저가 찍힐까?', trueUser);
 
   //접속인원 4명 이상 + 현재 접속인원 === true인원 맞는지 확인
   useEffect(() => {
