@@ -8,10 +8,10 @@ import { ReactComponent as ChatProfileDefault } from '../assets/chat_profile_def
 import { ReactComponent as ChatProfileLion } from '../assets/chat_profile_lion.svg';
 import { ReactComponent as PersonIcon } from '../assets/icon_person.svg';
 import { ReactComponent as SendIcon } from '../assets/icon_send.svg';
+import UserInfo from './UserInfo';
 
 //민형님 주소
 import { io } from 'socket.io-client';
-import UserInfo from './UserInfo';
 export const socket = io('https://minhyeongi.xyz', {
   cors: {
     origin: '*',

@@ -243,65 +243,7 @@ class OvReact extends Component {
                   )}
                 </>
               ))}
-
-              {/* {userCameras.map((person) =>
-            person.boolkey === true ? (
-              <ReadyWrap key={person.id}>
-                <ReadyMediumWrap>
-                  <Ready />
-                </ReadyMediumWrap>
-                <Prepared />
-                <ReadyNickName>{person.nickname}</ReadyNickName>
-              </ReadyWrap>
-            ) : (
-              // <RTC param={param.id} nickname={cookies.nickname} />
-              <Camera
-                person={person.nickname}
-                key={person.id}
-                param={param.id}
-              />
-            )
-          )} */}
             </Users>
-            {/* <div
-              id="video-container"
-              className="col-md-4"
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'space-between', //가로 띄우기
-                width: '100%',
-                minWidth: '880px',
-                height: '50vh',
-                backgroundColor: 'pink',
-                padding: '0',
-                margin: '0',
-              }}
-            >
-              {this.state.publisher !== undefined && (
-                <div
-                  className="stream-container col-md-6 col-xs-6"
-                  style={{ width: '24%' }}
-                >
-                  <UserVideoComponent
-                    streamManager={this.state.publisher}
-                    ready={this.state.readyStatus}
-                  />
-                </div>
-              )}
-              {this.state.subscribers.map((sub, i) => (
-                <div
-                  key={i}
-                  className="stream-container col-md-6 col-xs-6"
-                  style={{ width: '24%' }}
-                >
-                  <UserVideoComponent
-                    streamManager={sub}
-                    ready={this.state.readyStatus}
-                  />
-                </div>
-              ))}
-            </div> */}
           </div>
         )}
       </div>

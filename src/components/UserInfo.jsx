@@ -124,9 +124,9 @@ const UserWrap = styled.div`
   flex-direction: column;
   border-radius: 5px;
   display: flex;
-  position: fixed;
-  left: 84%;
-  top: 105px;
+  position: absolute;
+  top: 0;
+  right: 0;
   font-size: ${(props) => props.theme.fontSize.xs};
   box-shadow: -4px 4px 10px 4px rgba(34, 34, 34, 0.05);
   justify-content: space-around;
