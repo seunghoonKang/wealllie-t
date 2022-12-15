@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import UserVideoComponent from './UserVideoComponent';
 import Camera from '../elements/Camera1';
 import styled from 'styled-components';
-import './OvReactCss.css';
 
 const APPLICATION_SERVER_URL = 'https://minhyeongi.xyz/';
 
