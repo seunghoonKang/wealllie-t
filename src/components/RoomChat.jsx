@@ -11,6 +11,7 @@ import { ReactComponent as SendIcon } from '../assets/icon_send.svg';
 
 //민형님 주소
 import { io } from 'socket.io-client';
+import { useSelector } from 'react-redux';
 export const socket = io('https://minhyeongi.xyz', {
   cors: {
     origin: '*',
@@ -19,6 +20,9 @@ export const socket = io('https://minhyeongi.xyz', {
 });
 
 const RoomChat = () => {
+  const userNick = useSelector((state) => state.room.userNickname);
+  const currCount = userNick.filter((nick) => nick !== '');
+
   const themeContext = useContext(ThemeContext);
   const navigate = useNavigate();
   let nickname = '익명';
@@ -113,7 +117,7 @@ const RoomChat = () => {
         <p style={{ fontSize: '30px' }}>CHAT</p>
         <People>
           <PersonIcon style={{ marginRight: '6px' }} />
-          {userCnt}
+          {currCount.length}
         </People>
       </ChatTop>
       <ChatRow ref={scrollRef}>
