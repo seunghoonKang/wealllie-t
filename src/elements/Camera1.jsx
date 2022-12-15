@@ -121,5 +121,5 @@ const Arrested = styled.div`
   left: 50%;
   transform: translateY(-25%);
   margin-left: -80px;
-  z-index: 9999 !important;
+  z-index: 990;
 `;

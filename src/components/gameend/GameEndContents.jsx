@@ -110,7 +110,7 @@ const GameEndContents = () => {
 const GameEndEntireContainer = styled.div`
   width: 100%;
   //min-height: 570px;
-  height: calc(90vh - 100px);
+  height: calc(76vh - 100px);
   background-color: ${(props) => props.theme.color.gray3};
 `;
 
