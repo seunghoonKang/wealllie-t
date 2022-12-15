@@ -30,8 +30,8 @@ const GameStart = ({ userCameras }) => {
   const [earlyVote, setEarlyVote] = useState(false);
   const [cookies] = useCookies(['nickname']);
   const param = useParams();
-  let totalTime = 10000;
-  // let totalTime = 5000;
+  // let totalTime = 10000;
+  let totalTime = 300000;
   const nickname = cookies.nickname;
 
   // let initialState = [

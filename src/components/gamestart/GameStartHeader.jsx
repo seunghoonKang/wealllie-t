@@ -21,18 +21,18 @@ const GameStartHeader = ({ setEarlyVote, userCameras }) => {
   const param = useParams();
 
   const [earlyVoteInfo, setEarlyVoteInfo] = useState();
-  const tempGoOutBtn = () => {
-    //나가기 버튼 눌렀을 때 퇴장메세지 이벤트 emit
-    socket.emit('leaveRoomMsg', param.id, cookies.nickname);
-    console.log('나가기버튼 누름');
-    //퇴장 이벤트
-    alert('방 나가기 소켓 임시로 넣었음');
-    socket.emit('leaveRoom', param.id, cookies.nickname);
-    socket.on('leaveRoom', () => {
-      navigate('/home');
-    });
-    navigate('/home');
-  };
+  // const tempGoOutBtn = () => {
+  //   //나가기 버튼 눌렀을 때 퇴장메세지 이벤트 emit
+  //   socket.emit('leaveRoomMsg', param.id, cookies.nickname);
+  //   console.log('나가기버튼 누름');
+  //   //퇴장 이벤트
+  //   alert('방 나가기 소켓 임시로 넣었음');
+  //   socket.emit('leaveRoom', param.id, cookies.nickname);
+  //   socket.on('leaveRoom', () => {
+  //     navigate('/home');
+  //   });
+  //   navigate('/home');
+  // };
 
   const modalset = () => {
     setTimeout(() => {
@@ -100,14 +100,13 @@ const GameStartHeader = ({ setEarlyVote, userCameras }) => {
             <VoteIcon width="16" height="16" fill="none" />
           </VoteIconDiv>
           <div className="pr-2 ">
-            {earlyVoteInfo?.currNowVoteCount || 0}
-            {earlyVoteInfo?.currGameRoomUsers || realUser.length}
+            {earlyVoteInfo?.currNowVoteCount || 0} / {realUser.length}
           </div>
         </div>
       </HeaderTitle>
-      <Button type={'button'} addStyle={{}} onClick={tempGoOutBtn}>
+      {/* <Button type={'button'} addStyle={{}} onClick={tempGoOutBtn}>
         나가기 임시
-      </Button>
+      </Button> */}
       <Button
         type={'button'}
         addStyle={{

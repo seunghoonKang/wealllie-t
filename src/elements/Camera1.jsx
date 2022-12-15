@@ -12,7 +12,8 @@ const Camera = ({
   streamManager,
   ready,
 }) => {
-  // console.log('여긴 카메라', person);
+  //console.log('여긴 카메라', person);
+  console.log('stamp', stamp);
   const videoRef = useRef();
   const gamePage = useSelector((state) => state.game.gamePage);
   function getNicknameTag() {
@@ -49,12 +50,12 @@ const Camera = ({
       <PreParingIconWrap>
         {streamManager !== undefined ? (
           <div>
-            <video autoPlay={true} ref={videoRef} />
-            {gamePage === 3 && person !== '' && stamp === person && (
+            {gamePage === 2 && person !== '' && stamp === person && (
               <Arrested>
                 <img src={arrestedstamp} alt="투표 지목된 사람" />
               </Arrested>
             )}
+            <video autoPlay={true} ref={videoRef} />
           </div>
         ) : (
           <Preparing />
