@@ -58,7 +58,7 @@ const GameEnd = ({ setRtcExit }) => {
 };
 
 const GameEndEntireContainer = styled.div`
-  width: 100%;
+  width: calc(100% + 350px);
 `;
 
 const LogoImg = styled.div`

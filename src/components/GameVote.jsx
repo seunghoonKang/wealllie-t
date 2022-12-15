@@ -34,37 +34,6 @@ const GameVote = ({
   // const [stamp, setStamp] = useState(`${myNickname}`); //기본값이 본인으로 선택
   const spy = useSelector((state) => state.game.spy); //스파이 닉네임 들고오기
 
-  // const initialState = ['', '', '', '', '', '', '', ''];
-  // const [userCameras, setUserCameras] = useState(initialState);
-
-  // useEffect(() => {
-  //   socket.emit('userNickname', param.id);
-  //   socket.on('userNickname', (user) => {
-  //     console.log(user);
-  //     setUserCameras([...user]);
-  //     return userCameras;
-  //   });
-  // }, []);
-
-  // socket.emit('userNickname', param.id);
-  // socket.on('userNickname', (user) => {
-  //   console.log(user);
-  //   setUserCameras(initialState);
-  //   // setUserCameras(...user);
-  //   for (let i = 0; i < user.length; i++) {
-  //     if (userCameras[i] !== user[i]) {
-  //       let newuserCameras = initialState;
-  //       newuserCameras[i] = user[i];
-  //       setUserCameras(newuserCameras);
-  //       // userCameras[i] = user[i];
-  //     }
-  //   }
-  //   // dispatch(getUserNickname(userCameras));
-  //   return userCameras;
-  // });
-
-  // console.log(userCameras);
-
   /* 
   투표 기본값 : 본인 (O) -> stamp가 찍혀있진 않음
   투표 시간이 다 되었을때, 투표 처리

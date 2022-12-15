@@ -70,7 +70,6 @@ const Camera = ({
           <NickName>{getNicknameTag()}</NickName>
         )
       ) : null}
-      {/* <NickName>{getNicknameTag()}</NickName> */}
     </Wrap>
   );
 };

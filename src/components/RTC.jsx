@@ -200,51 +200,106 @@ class OvReact extends Component {
 
     return (
       <div>
-        {this.state.session !== undefined && (
-          <div>
-            {this.props.rtcExit && this.leaveSession()}
-            <Users>
-              {this.props.userCameras.map((person) => (
-                <>
-                  {this.state.publisher !== undefined &&
-                    JSON.parse(this.state.publisher.stream.connection.data)
-                      .clientData === person.nickname && (
-                      <Camera
-                        stamp={this.props.stamp}
-                        setStamp={this.props.setStamp}
-                        voteStatus={this.props.voteStatus}
-                        setVoteStatus={this.props.setVoteStatus}
-                        streamManager={this.state.publisher}
-                        person={person.nickname}
-                        ready={person.boolkey}
-                        // key={person.id}
-                      />
-                    )}
-                  {this.state.subscribers.map(
-                    (sub, i) =>
-                      JSON.parse(sub.stream.connection.data).clientData ===
-                        person.nickname && (
-                        <Camera
-                          stamp={this.props.stamp}
-                          setStamp={this.props.setStamp}
-                          voteStatus={this.props.voteStatus}
-                          setVoteStatus={this.props.setVoteStatus}
-                          streamManager={sub}
-                          person={person.nickname}
-                          ready={person.boolkey}
-                          // key={person.id}
-                        />
-                      )
-                  )}
-                  {person.nickname === '' && (
+        {this.props.gameEnd ? (
+          <>
+            {this.state.session !== undefined && (
+              <div>
+                {this.props.rtcExit && this.leaveSession()}
+                <EndGameUsers>
+                  {this.props.userCameras.map((person) => (
+                    <>
+                      {this.state.publisher !== undefined &&
+                        JSON.parse(this.state.publisher.stream.connection.data)
+                          .clientData === person.nickname &&
+                        this.props.spy !== person.nickname && (
+                          <Camera
+                            stamp={this.props.stamp}
+                            setStamp={this.props.setStamp}
+                            voteStatus={this.props.voteStatus}
+                            setVoteStatus={this.props.setVoteStatus}
+                            streamManager={this.state.publisher}
+                            person={person.nickname}
+                            ready={person.boolkey}
+                            // key={person.id}
+                          />
+                        )}
+                      {this.state.subscribers.map(
+                        (sub, i) =>
+                          JSON.parse(sub.stream.connection.data).clientData ===
+                            person.nickname &&
+                          this.props.spy !== person.nickname && (
+                            <Camera
+                              stamp={this.props.stamp}
+                              setStamp={this.props.setStamp}
+                              voteStatus={this.props.voteStatus}
+                              setVoteStatus={this.props.setVoteStatus}
+                              streamManager={sub}
+                              person={person.nickname}
+                              ready={person.boolkey}
+                              // key={person.id}
+                            />
+                          )
+                      )}
+                      {/* {person.nickname === '' && (
                     <Camera
                     // key={person.id}
                     />
-                  )}
-                </>
-              ))}
-            </Users>
-          </div>
+                  )} */}
+                    </>
+                  ))}
+                </EndGameUsers>
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            {this.state.session !== undefined && (
+              <div>
+                {this.props.rtcExit && this.leaveSession()}
+                <Users>
+                  {this.props.userCameras.map((person) => (
+                    <>
+                      {this.state.publisher !== undefined &&
+                        JSON.parse(this.state.publisher.stream.connection.data)
+                          .clientData === person.nickname && (
+                          <Camera
+                            stamp={this.props.stamp}
+                            setStamp={this.props.setStamp}
+                            voteStatus={this.props.voteStatus}
+                            setVoteStatus={this.props.setVoteStatus}
+                            streamManager={this.state.publisher}
+                            person={person.nickname}
+                            ready={person.boolkey}
+                            // key={person.id}
+                          />
+                        )}
+                      {this.state.subscribers.map(
+                        (sub, i) =>
+                          JSON.parse(sub.stream.connection.data).clientData ===
+                            person.nickname && (
+                            <Camera
+                              stamp={this.props.stamp}
+                              setStamp={this.props.setStamp}
+                              voteStatus={this.props.voteStatus}
+                              setVoteStatus={this.props.setVoteStatus}
+                              streamManager={sub}
+                              person={person.nickname}
+                              ready={person.boolkey}
+                              // key={person.id}
+                            />
+                          )
+                      )}
+                      {person.nickname === '' && (
+                        <Camera
+                        // key={person.id}
+                        />
+                      )}
+                    </>
+                  ))}
+                </Users>
+              </div>
+            )}
+          </>
         )}
       </div>
     );
@@ -308,4 +363,16 @@ const Users = styled.div`
   height: 50vh;
   min-height: 360px;
   margin: 1vh 0;
+`;
+
+const EndGameUsers = styled.div`
+  display: flex;
+  /* flex-wrap: wrap; */
+  justify-content: space-evenly; //가로 띄우기
+  align-content: space-evenly; //세로 띄우기
+  width: calc(100% + 350px);
+  min-width: 880px;
+  height: 30vh;
+  /* min-height: 360px; */
+  /* margin: 1vh 0; */
 `;

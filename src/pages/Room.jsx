@@ -38,16 +38,12 @@ const Room = () => {
           {/* {gamePage !== 3 ? ( */}
           <>
             <Game>
-              {/* 본인 컴포넌트말고 주석하면 돼용 */}
-              {/* {gamePage === 0 && <GameReady />}
-                {gamePage === 1 && <GameStart />}
-                {gamePage === 2 && <GameVote />} */}
               <GameReady />
               {/* <GameStart /> */}
               {/* <GameVote /> */}
             </Game>
             {/* <GameEnd /> */}
-            <RoomChat />
+            {gamePage !== 0 && <RoomChat />}
           </>
           {/* ) : ( */}
           {/* <GameEnd /> */}

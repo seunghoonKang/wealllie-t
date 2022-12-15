@@ -32,11 +32,13 @@ const GameReady = () => {
   const [rtcExit, setRtcExit] = useState(false);
   const [voteStatus, setVoteStatus] = useState(false);
   const [cookies] = useCookies(['nickname']);
+  const [gameEnd, setGameEnd] = useState(true);
   const param = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userNick = useSelector((state) => state.room.userNickname);
   const gamePage = useSelector((state) => state.game.gamePage);
+  const spy = useSelector((state) => state.game.spy);
   const nickname = cookies.nickname;
   const [stamp, setStamp] = useState(`${nickname}`); //기본값이 본인으로 선택
 
@@ -131,6 +133,11 @@ const GameReady = () => {
     }
   }, [pendingReady]);
 
+  //GameEnd 화면 띄우기
+  useEffect(() => {
+    gamePage === 3 && setGameEnd(true);
+  }, [gamePage]);
+
   //나가기 핸들러 들고옴
   const BtnHandler = async () => {
     //RTC 퇴장이벤트
@@ -150,7 +157,7 @@ const GameReady = () => {
 
   return (
     <>
-      {gamePage === 0 && (
+      {gamePage === 3 && (
         <ReadyLayout>
           {trueAlert === true && (
             <CommonModal
@@ -202,7 +209,7 @@ const GameReady = () => {
         />
       )}
       {/* <GameVote userCameras={userCameras} /> */}
-      {gamePage === 3 && <GameEnd setRtcExit={setRtcExit} />}
+      {gamePage === 0 && <GameEnd setRtcExit={setRtcExit} />}
       <RTC
         param={param.id}
         nickname={nickname}
@@ -213,6 +220,8 @@ const GameReady = () => {
         setStamp={setStamp}
         voteStatus={voteStatus}
         setVoteStatus={setVoteStatus}
+        spy={spy}
+        gameEnd={gameEnd}
       />
     </>
   );
