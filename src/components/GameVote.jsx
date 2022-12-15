@@ -376,6 +376,7 @@ const CardContainer = styled.div`
   width: 100%;
   height: 50vh;
   min-height: 360px;
+  margin-bottom: 1000px;
   /* background-color: gray; */
 `;
 

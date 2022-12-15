@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import UserVideoComponent from './UserVideoComponent';
 import Camera from '../elements/Camera1';
+import CameraEnd from '../elements/CameraEnd';
 import styled from 'styled-components';
 import GameEndContents from './gameend/GameEndContents';
 
@@ -134,8 +135,8 @@ class OvReact extends Component {
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: '320x240', // The resolution of your video
-                frameRate: 24, // The frame rate of your video
+                resolution: '640x480', // The resolution of your video
+                frameRate: 30, // The frame rate of your video
                 insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
               });
@@ -206,66 +207,55 @@ class OvReact extends Component {
             {this.state.session !== undefined && (
               <div>
                 {this.props.rtcExit && this.leaveSession()}
-                <EndGameUsers>
+                <div
+                  className="spyScreen"
+                  style={{ width: 'calc(100% + 350px)' }}
+                >
+                  {/* 스파이화면 */}
+                  {this.state.publisher !== undefined &&
+                    JSON.parse(this.state.publisher.stream.connection.data)
+                      .clientData === this.props.spy && (
+                      <GameEndContents streamManager={this.state.publisher} />
+                    )}
+                  {this.state.subscribers.map(
+                    (sub, i) =>
+                      JSON.parse(sub.stream.connection.data).clientData ===
+                        this.props.spy && (
+                        <GameEndContents streamManager={sub} />
+                      )
+                  )}
+                </div>
+                <EndGameUsers className="endGameUsers">
                   {this.props.userCameras.map((person) => (
-                    <div>
-                      <div>
-                        {/* 스파이화면 */}
-                        {this.state.publisher !== undefined &&
-                          JSON.parse(
-                            this.state.publisher.stream.connection.data
-                          ).clientData === person.nickname &&
-                          this.props.spy == person.nickname && (
-                            <GameEndContents
+                    // <div className="allscreen">
+                    <NoneSpyUsers className="noneSpyUsers">
+                      {/* 스파이를 제외한 나머지 사람들 */}
+                      {this.state.publisher !== undefined &&
+                        JSON.parse(this.state.publisher.stream.connection.data)
+                          .clientData === person.nickname &&
+                        this.props.spy !== person.nickname && (
+                          <>
+                            <CameraEnd
                               streamManager={this.state.publisher}
-                            />
-                          )}
-                        {this.state.subscribers.map(
-                          (sub, i) =>
-                            JSON.parse(sub.stream.connection.data)
-                              .clientData === person.nickname &&
-                            this.props.spy == person.nickname && (
-                              <GameEndContents streamManager={sub} />
-                            )
-                        )}
-                      </div>
-                      <NoneSpyUsers>
-                        {/* 스파이를 제외한 나머지 사람들 */}
-                        {this.state.publisher !== undefined &&
-                          JSON.parse(
-                            this.state.publisher.stream.connection.data
-                          ).clientData === person.nickname &&
-                          this.props.spy !== person.nickname && (
-                            <Camera
-                              stamp={this.props.stamp}
-                              setStamp={this.props.setStamp}
-                              voteStatus={this.props.voteStatus}
-                              setVoteStatus={this.props.setVoteStatus}
-                              streamManager={this.state.publisher}
-                              person={person.nickname}
-                              ready={person.boolkey}
                               // key={person.id}
                             />
-                          )}
-                        {this.state.subscribers.map(
-                          (sub, i) =>
-                            JSON.parse(sub.stream.connection.data)
-                              .clientData === person.nickname &&
-                            this.props.spy !== person.nickname && (
-                              <Camera
-                                stamp={this.props.stamp}
-                                setStamp={this.props.setStamp}
-                                voteStatus={this.props.voteStatus}
-                                setVoteStatus={this.props.setVoteStatus}
+                          </>
+                        )}
+                      {this.state.subscribers.map(
+                        (sub, i) =>
+                          JSON.parse(sub.stream.connection.data).clientData ===
+                            person.nickname &&
+                          this.props.spy !== person.nickname && (
+                            <>
+                              <CameraEnd
                                 streamManager={sub}
-                                person={person.nickname}
-                                ready={person.boolkey}
                                 // key={person.id}
                               />
-                            )
-                        )}
-                      </NoneSpyUsers>
-                    </div>
+                            </>
+                          )
+                      )}
+                    </NoneSpyUsers>
+                    // </div>
                   ))}
                 </EndGameUsers>
               </div>
@@ -383,35 +373,28 @@ const Users = styled.div`
   height: 50vh;
   min-height: 360px;
   margin: 1vh 0;
+
+  .noneSpyUsers {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
 `;
 
 const EndGameUsers = styled.div`
-  /* flex-wrap: wrap; */
+  display: flex;
+  flex-wrap: no-wrap;
+  justify-content: space-evenly; //가로 띄우기
+  align-content: space-evenly; //세로 띄우기
   width: calc(100% + 350px);
   min-width: 880px;
-  /* height: 30vh; */
-  /* min-height: 360px; */
-  /* margin: 1vh 0; */
+  height: 30vh;
+  min-height: 240px;
   background-color: pink;
+  padding: 20px 0;
 `;
 
 const NoneSpyUsers = styled.div`
-  /* width: 100%;
-  display: flex;
-  justify-content: space-evenly; //가로 띄우기
-  align-content: space-evenly; //세로 띄우기 */
-  -webkit-appearance: none;
-  width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-lines: single;
-  -ms-flex-wrap: nowrap;
-  flex-wrap: nowrap;
-
   /* flex-wrap: wrap; */
   /* justify-content: space-evenly; //가로 띄우기 */
   /* align-content: space-evenly; //세로 띄우기 */

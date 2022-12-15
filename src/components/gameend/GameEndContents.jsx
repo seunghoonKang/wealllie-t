@@ -131,6 +131,7 @@ const GameEndEntireContainer = styled.div`
   //min-height: 570px;
   /* height: calc(76vh - 100px); */
   height: 53vh;
+  min-height: 340px;
   background-color: ${(props) => props.theme.color.gray3};
 `;
 
