@@ -85,20 +85,33 @@ const GameReady = () => {
 
   useEffect(() => {
     socket.on('readyList', (readyList) =>
-      console.log('콘솔창 확인', readyList)
+      console.log('레디리스트 이벤트 하이루', readyList)
     );
   });
 
   //불값 변경
-  const GameReadyBool = () => {
-    for (let int = 0; int < 8; int++) {
-      if (userCameras[int].nickname === pendingReady[0]?.nickname) {
-        userCameras[int].boolkey = pendingReady[0].boolkey;
+  // const GameReadyBool = () => {
+  //   for (let int = 0; int < 8; int++) {
+  //     if (userCameras[int].nickname === pendingReady[0]?.nickname) {
+  //       userCameras[int].boolkey = pendingReady[0].boolkey;
+  //     }
+  //   }
+  //   return userCameras;
+  // };
+  // GameReadyBool();
+
+  const GameListCheck = () => {
+    for (let num = 0; num < readyList.length; num++) {
+      if (redyList[num].boolkey === 'true') {
+        userCameras[num].boolkey = true;
+      } else if (redyList[num].boolkey === 'false') {
+        userCameras[num].boolkey = false;
       }
     }
     return userCameras;
   };
-  GameReadyBool();
+  GameListCheck();
+  console.log('새로운 유저 카메라 담긴 배열', userCameras);
 
   //준비한 유저 숫자
   const currentUser = userCameras.filter((user) => user.nickname !== '').length;
@@ -113,6 +126,7 @@ const GameReady = () => {
     userCameras[7].boolkey,
   ];
   const trueUser = currentReadyUSer.filter((user) => user === true);
+  console.log('과연 여기 트루 유저가 찍힐까?', trueUser);
 
   //접속인원 4명 이상 + 현재 접속인원 === true인원 맞는지 확인
   useEffect(() => {

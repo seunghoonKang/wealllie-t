@@ -12,6 +12,7 @@ import { ReactComponent as SendIcon } from '../assets/icon_send.svg';
 //민형님 주소
 import { io } from 'socket.io-client';
 import { useSelector } from 'react-redux';
+import UserInfo from './UserInfo';
 export const socket = io('https://minhyeongi.xyz', {
   cors: {
     origin: '*',
@@ -27,6 +28,7 @@ const RoomChat = () => {
   const navigate = useNavigate();
   let nickname = '익명';
   const [cookies, setCookie] = useCookies(['nickname']);
+  const [roomUserOpenModal, setRoomUserOpenModal] = useState(false);
   const [userCnt, setUserCnt] = useState(0);
   const [chat, setChat] = useState([
     // { notice: '뀨띠님이 입장하셨습니다' },
@@ -109,10 +111,23 @@ const RoomChat = () => {
   // console.log(chat);
   return (
     <ChatLayout theme={themeContext}>
-      <MyProfile>
+      <MyProfile
+        onClick={() => {
+          setRoomUserOpenModal(!roomUserOpenModal);
+        }}
+      >
         {/* 나중에 user 는 모달로 할수도 */}
         My ∨
       </MyProfile>
+      {roomUserOpenModal === true && (
+        <UserInfo
+          CloseUserModal={() => {
+            setRoomUserOpenModal(!roomUserOpenModal);
+          }}
+          roomUserOpenModal={roomUserOpenModal}
+          setRoomUserOpenModal={setRoomUserOpenModal}
+        />
+      )}
       <ChatTop>
         <p style={{ fontSize: '30px' }}>CHAT</p>
         <People>
@@ -186,6 +201,7 @@ const ChatLayout = styled.div`
   border-radius: 10px;
   position: relative;
   margin-left: 10px;
+
   /* //채팅방 열고 닫기 코드
   position: absolute;
   top: 0;
