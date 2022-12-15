@@ -83,6 +83,12 @@ const GameReady = () => {
     console.log('게임레디 확인', pendingReady);
   }, [pendingReady]);
 
+  useEffect(() => {
+    socket.on('readyList', (readyList) =>
+      console.log('콘솔창 확인', readyList)
+    );
+  });
+
   //불값 변경
   const GameReadyBool = () => {
     for (let int = 0; int < 8; int++) {

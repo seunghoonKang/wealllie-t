@@ -99,8 +99,8 @@ const GameStartHeader = ({ setEarlyVote, userCameras }) => {
           <VoteIconDiv>
             <VoteIcon width="16" height="16" fill="none" />
           </VoteIconDiv>
-          <div className=" pr-2">
-            {earlyVoteInfo?.currNowVoteCount || 0}/
+          <div className="pr-2 ">
+            {earlyVoteInfo?.currNowVoteCount || 0}
             {earlyVoteInfo?.currGameRoomUsers || realUser.length}
           </div>
         </div>
