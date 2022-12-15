@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Camera3 from '../../elements/Camera3';
 import SelectCategoryImg from '../gamestart/SelectCategoryImg';
 import { socket } from '../../shared/socket';
+import { ReactComponent as WinkCat } from '../../assets/wink_cat.svg';
 
 const GameEndContents = () => {
   const param = useParams();
@@ -94,7 +95,7 @@ const GameEndContents = () => {
           <SelectCategoryImg category={category} width="513" height="238" />
         </CategoryImg>
         <CorrectCard>
-          <div></div>
+          <WinkCat />
           <SpyName>{spy}</SpyName>
         </CorrectCard>
       </GameCardSection>
