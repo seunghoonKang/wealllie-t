@@ -32,7 +32,7 @@ const GameReady = () => {
   const [rtcExit, setRtcExit] = useState(false);
   const [voteStatus, setVoteStatus] = useState(false);
   const [cookies] = useCookies(['nickname']);
-  const [gameEnd, setGameEnd] = useState(true);
+  const [gameEnd, setGameEnd] = useState(false);
   const param = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -157,7 +157,7 @@ const GameReady = () => {
 
   return (
     <>
-      {gamePage === 3 && (
+      {gamePage === 0 && (
         <ReadyLayout>
           {trueAlert === true && (
             <CommonModal
@@ -198,7 +198,7 @@ const GameReady = () => {
           </ReadyLayoutSection>
         </ReadyLayout>
       )}
-      {gamePage === 0 && <GameStart userCameras={userCameras} />}
+      {gamePage === 1 && <GameStart userCameras={userCameras} />}
       {gamePage === 2 && (
         <GameVote
           userCameras={userCameras}
@@ -209,7 +209,7 @@ const GameReady = () => {
         />
       )}
       {/* <GameVote userCameras={userCameras} /> */}
-      {gamePage === 1 && <GameEnd setRtcExit={setRtcExit} />}
+      {gamePage === 3 && <GameEnd setRtcExit={setRtcExit} />}
       <RTC
         param={param.id}
         nickname={nickname}

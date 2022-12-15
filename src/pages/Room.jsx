@@ -43,7 +43,7 @@ const Room = () => {
               {/* <GameVote /> */}
             </Game>
             {/* <GameEnd /> */}
-            {gamePage !== 0 && <RoomChat />}
+            {gamePage !== 3 && <RoomChat />}
           </>
           {/* ) : ( */}
           {/* <GameEnd /> */}
