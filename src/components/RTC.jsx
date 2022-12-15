@@ -220,14 +220,14 @@ class OvReact extends Component {
                               streamManager={this.state.publisher}
                             />
                           )}
-                        {/* {this.state.subscribers.map(
-                        (sub, i) =>
-                          JSON.parse(sub.stream.connection.data).clientData ===
-                            person.nickname &&
-                          this.props.spy == person.nickname && (
-                            <GameEndContents streamManager={sub} />
-                          )
-                      )} */}
+                        {this.state.subscribers.map(
+                          (sub, i) =>
+                            JSON.parse(sub.stream.connection.data)
+                              .clientData === person.nickname &&
+                            this.props.spy == person.nickname && (
+                              <GameEndContents streamManager={sub} />
+                            )
+                        )}
                       </div>
                       <NoneSpyUsers>
                         {/* 스파이를 제외한 나머지 사람들 */}
