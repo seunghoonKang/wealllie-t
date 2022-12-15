@@ -29,6 +29,7 @@ const GameReady = () => {
   const [ready, setReady] = useState(true);
   const [trueAlert, setTrueAlert] = useState(false);
   const [pendingReady, setPendingReady] = useState([]);
+  const [pendingList, setPendingList] = useState([]);
   const [rtcExit, setRtcExit] = useState(false);
   const [cookies] = useCookies(['nickname']);
   const param = useParams();
@@ -84,12 +85,10 @@ const GameReady = () => {
   }, [pendingReady]);
 
   useEffect(() => {
-    socket.on('readyList', (readyList) =>
-      console.log('레디리스트 이벤트 하이루', readyList)
-    );
+    socket.on('readyList', (readyList) => setPendingList(readyList));
   });
 
-  //불값 변경
+  //불값 변경 (밑에 게임리스트 안되면 이거 해야할듯)
   // const GameReadyBool = () => {
   //   for (let int = 0; int < 8; int++) {
   //     if (userCameras[int].nickname === pendingReady[0]?.nickname) {
@@ -100,17 +99,19 @@ const GameReady = () => {
   // };
   // GameReadyBool();
 
+  console.log('받아오는 값 확인', pendingList);
   const GameListCheck = () => {
-    for (let num = 0; num < readyList.length; num++) {
-      if (redyList[num].boolkey === 'true') {
+    for (let num = 0; num < pendingList.length; num++) {
+      if (pendingList[num].boolkey === 'true') {
         userCameras[num].boolkey = true;
-      } else if (redyList[num].boolkey === 'false') {
+      } else if (pendingList[num].boolkey === 'false') {
         userCameras[num].boolkey = false;
       }
     }
     return userCameras;
   };
   GameListCheck();
+
   console.log('새로운 유저 카메라 담긴 배열', userCameras);
 
   //준비한 유저 숫자
