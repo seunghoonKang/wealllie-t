@@ -38,7 +38,7 @@ const UserInfo = ({ roomUserOpenModal, setRoomUserOpenModal }) => {
   return (
     <>
       <UserWrap>
-        {roomUserOpenModal === true && (
+        {roomUserOpenModal === true ? (
           <ProfilWrap>
             {/* 프로필 이미지 */}
             <Profil>
@@ -54,60 +54,62 @@ const UserInfo = ({ roomUserOpenModal, setRoomUserOpenModal }) => {
               {getUserInfo.voteSpyRating}%
             </MemberInfo>
           </ProfilWrap>
+        ) : (
+          <>
+            {' '}
+            <ProfilWrap>
+              {/* 프로필 이미지 */}
+              <Profil>
+                <img src={getUserInfo.profileImg} />
+              </Profil>
+
+              {/* 유저이름 + 수정 */}
+              <UserNick>
+                {!Correction ? (
+                  getUserInfo.nickname
+                ) : (
+                  <input
+                    ref={nickRef}
+                    defaultValue={getUserInfo.nickname}
+                    type="text"
+                    placeholder="입력해주세요"
+                  ></input>
+                )}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const userNickname = { nickname: nickRef.current.value };
+                    Correction === true && dispatch(__putUser(userNickname));
+                    if (nickRef.current.value === '') {
+                      alert('내용을 입력해 주세요');
+                      return;
+                    } else if (putUserInfo) {
+                      removeCookie('nickname');
+                      setCookie('nickname', putUserInfo, {
+                        path: '/',
+                        secure: true,
+                        sameSite: 'none',
+                      });
+                    }
+                    setCorrection(!Correction);
+                  }}
+                >
+                  <NicknameMakeButton className="rounded-md hover:bg-orange-400" />
+                </button>
+              </UserNick>
+            </ProfilWrap>
+            {/* 승률 */}
+            <MemberInfo>
+              <div>스파이 승률</div>
+              {getUserInfo.spyWinRating}%
+            </MemberInfo>
+            <MemberInfo>
+              <div>스파이 정답률</div>
+              {getUserInfo.voteSpyRating}%
+            </MemberInfo>
+            <button onClick={logoutHandler}>로그아웃</button>
+          </>
         )}
-
-        <ProfilWrap>
-          {/* 프로필 이미지 */}
-          <Profil>
-            <img src={getUserInfo.profileImg} />
-          </Profil>
-
-          {/* 유저이름 + 수정 */}
-          <UserNick>
-            {!Correction ? (
-              getUserInfo.nickname
-            ) : (
-              <input
-                ref={nickRef}
-                defaultValue={getUserInfo.nickname}
-                type="text"
-                placeholder="입력해주세요"
-              ></input>
-            )}
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                const userNickname = { nickname: nickRef.current.value };
-                Correction === true && dispatch(__putUser(userNickname));
-                if (nickRef.current.value === '') {
-                  alert('내용을 입력해 주세요');
-                  return;
-                } else if (putUserInfo) {
-                  removeCookie('nickname');
-                  setCookie('nickname', putUserInfo, {
-                    path: '/',
-                    secure: true,
-                    sameSite: 'none',
-                  });
-                }
-                setCorrection(!Correction);
-              }}
-            >
-              <NicknameMakeButton className="rounded-md hover:bg-orange-400" />
-            </button>
-          </UserNick>
-        </ProfilWrap>
-
-        {/* 승률 */}
-        <MemberInfo>
-          <div>스파이 승률</div>
-          {getUserInfo.spyWinRating}%
-        </MemberInfo>
-        <MemberInfo>
-          <div>스파이 정답률</div>
-          {getUserInfo.voteSpyRating}%
-        </MemberInfo>
-        <button onClick={logoutHandler}>로그아웃</button>
       </UserWrap>
     </>
   );
