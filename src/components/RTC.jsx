@@ -380,8 +380,8 @@ const Users = styled.div`
   align-content: space-evenly; //세로 띄우기
   width: 100%;
   min-width: 880px;
-  /* height: 50vh;
-  min-height: 360px; */
+  height: 50vh;
+  min-height: 360px;
   margin: 1vh 0;
 `;
 

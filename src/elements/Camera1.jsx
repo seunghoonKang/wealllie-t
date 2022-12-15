@@ -77,11 +77,11 @@ const Camera = ({
 export default Camera;
 
 const Wrap = styled.div`
-  max-width: 204px;
+  /* max-width: 204px; */
   width: 24%;
   height: 45%;
   min-height: 170px;
-  /* max-height: 160px; */
+  max-height: 200px;
   background-color: #e8e8e8;
   border-radius: 5px;
   display: flex;
