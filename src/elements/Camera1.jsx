@@ -37,7 +37,7 @@ const Camera = ({
   //투표할때 필요한 로직
   const arrestedToggle = () => {
     if (gamePage === 2) {
-      person !== '' && voteStatus == false && setStamp(person);
+      person !== '' && voteStatus === false && setStamp(person);
       // if (voteStatus == false) {
       //   setStamp(person);
       // }
@@ -120,5 +120,5 @@ const Arrested = styled.div`
   left: 50%;
   transform: translateY(-25%);
   margin-left: -80px;
-  z-index: 99;
+  z-index: 9999 !important;
 `;
